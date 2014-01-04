@@ -1,0 +1,28 @@
+{
+    "vendors": {
+        "include": [
+
+            "bower_components/jquery/jquery.js",
+
+
+            "bower_components/angular/angular.js",
+
+            "bower_components/restangular/dist/restangular.js",
+            
+            "bower_components/angular-growl/build/angular-growl.js",
+
+            "bower_components/bootstrap/dist/js/bootstrap.js"
+
+        ],
+        "destination": "app/vendors/vendors.js"
+    },
+
+    "app": {
+        "include": [
+            "app/js/core.js",
+            "app/js/src/**/*.js"
+        ],
+        "destination": "app/app.js"
+    }
+
+}

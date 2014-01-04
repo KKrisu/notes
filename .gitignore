@@ -1,0 +1,15 @@
+
+# project related
+ngminned
+node_modules
+bower_components
+src/realmassive/static
+src/realmassive/distlib
+.data/*
+!.data/.gitkeep
+
+# Sublime Text files
+*.sublime-*
+
+sftp-config.json
+src/realmassive/core/models/listing.py
