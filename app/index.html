@@ -12,16 +12,25 @@
     </head>
     <body ng-app="notes">
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+        <div class="container">
 
-        <div ng-controller="newNote" ng-include="'/partials/newNote.html'">
-            new Note
+            <div class="header">
+                <ul class="nav nav-pills pull-right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li class="active"><a href="#">About</a></li>
+                    <li class="active"><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div ng-controller="newNote" ng-include="'/partials/newNote.html'" class="new-note">
+                new Note
+            </div>
+
+            <script src="vendors/vendors.js"></script>
+            <script src="vendors/markdown.js"></script>
+            <script src="app.js"></script>
+
         </div>
-
-        <script src="vendors/vendors.js"></script>
-        <script src="vendors/markdown.js"></script>
-        <script src="app.js"></script>
 
     </body>
 </html>

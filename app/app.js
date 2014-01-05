@@ -12,6 +12,10 @@ angular.module('notes')
         // TODO: presave every minute or something
     };
 
+    $scope.saveEntry = function () {
+        pr('to save:', $scope.form);
+    };
+
 });
 
 angular.module('notesFilters')

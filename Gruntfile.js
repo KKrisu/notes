@@ -28,6 +28,12 @@ module.exports = function(grunt) {
                 files: [{
                     dest: 'app/vendors/css/bootstrap.css',
                     src: 'bower_components/bootstrap/dist/css/bootstrap.min.css'
+                }, {
+                    dest: 'app/vendors/bootstrap-less/',
+                    src: 'bower_components/bootstrap/less/*.less',
+                    filter: 'isFile',
+                    expand: true,
+                    flatten: true
                 }]
             }
         },

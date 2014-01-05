@@ -3,3 +3,15 @@
 body {
   background-color: silver;
 }
+
+.new-note form .row {
+  margin: 10px 0;
+}
+
+.new-note form .row textarea.col-xs-6 {
+  width: 50%;
+}
+
+.new-note form .row .preview {
+  background-color: #999;
+}
