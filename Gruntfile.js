@@ -1,5 +1,5 @@
 /* jshint node: true */
-var directoriesToClean = ['app/vendors/*'];
+var directoriesToClean = [/*'app/vendors/*'*/];
 
 var recessConf = {
     'app/app.css': [
@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         },
 
         recess: {
-            // recess:concat just compiles .less files into static/ - development
+            // recess:concat just compiles .less files
             concat: {
                 options: {
                     compile: true
@@ -62,7 +62,8 @@ module.exports = function(grunt) {
             },
             js_app: {
                 files: [
-                    'app/js/**/*.js'
+                    'app/js/**/*.js',
+                    'app/js/*.js'
                 ],
                 tasks: ['concat:app'] // compliling only app.js to speed up development
             },

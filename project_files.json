@@ -20,7 +20,7 @@
     "app": {
         "include": [
             "app/js/core.js",
-            "app/js/src/**/*.js"
+            "app/js/**/*.js"
         ],
         "destination": "app/app.js"
     }

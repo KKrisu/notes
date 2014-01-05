@@ -10,12 +10,17 @@
         <link rel="stylesheet" href="vendors/css/bootstrap.css">
         <link rel="stylesheet" href="app.css">
     </head>
-    <body>
+    <body ng-app="notes">
 
         <!-- Add your site or application content here -->
         <p>Hello world! This is HTML5 Boilerplate.</p>
 
+        <div ng-controller="newNote" ng-include="'/partials/newNote.html'">
+            new Note
+        </div>
+
         <script src="vendors/vendors.js"></script>
+        <script src="vendors/markdown.js"></script>
         <script src="app.js"></script>
 
     </body>
