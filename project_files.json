@@ -25,7 +25,7 @@
             "app/js/core.js",
             "app/js/**/*.js"
         ],
-        "destination": "app/app.js"
+        "destination": "app/compiled.js"
     }
 
 }
