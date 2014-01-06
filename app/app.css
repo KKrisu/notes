@@ -10,6 +10,8 @@ body {
 
 .new-note form .row textarea.col-xs-6 {
   width: 50%;
+  height: 180px;
+  max-width: 50%;
 }
 
 .new-note form .row .preview {

@@ -69,7 +69,8 @@ module.exports = function(grunt) {
             js_app: {
                 files: [
                     'app/js/**/*.js',
-                    'app/js/*.js'
+                    'app/js/*.js',
+                    'app/partials/*'
                 ],
                 tasks: ['concat:app'] // compliling only app.js to speed up development
             },
