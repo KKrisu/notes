@@ -34,6 +34,12 @@ module.exports = function(grunt) {
                     filter: 'isFile',
                     expand: true,
                     flatten: true
+                }, {
+                    dest: 'app/vendors/fonts/',
+                    src: 'bower_components/bootstrap/dist/fonts/*',
+                    filter: 'isFile',
+                    expand: true,
+                    flatten: true
                 }]
             }
         },

@@ -16,7 +16,7 @@ angular.module('notes')
     // TODO: should be sorted by occurence
     $scope.tags = {
         saved: ['programming', 'js', 'stx', 'webgl', 'live', 'wife'],
-        selectedTags: [],
+        selected: ['js', 'programming'],
         newTag: '',
 
         // TODO: decide: use this or no??
@@ -27,6 +27,24 @@ angular.module('notes')
 
     $scope.typeaheadSelected = function () {
 
+        if($scope.tags.selected.indexOf($scope.tags.newTag) >= 0) {
+            pr('tag already exists');
+        } else {
+            $scope.tags.selected.push($scope.tags.newTag);
+        }
+
+        $scope.tags.newTag = '';
+
+    };
+
+    $scope.cancelTag = function (tag) {
+        if(!tag || $scope.tags.selected.indexOf(tag) < 0) {
+            return false;
+        }
+
+        _.remove($scope.tags.selected, function (t) {
+            return t === tag;
+        });
     };
 
 });

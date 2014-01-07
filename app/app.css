@@ -14,6 +14,21 @@ body {
   max-width: 50%;
 }
 
-.new-note form .row .preview {
+.new-note form .preview {
   background-color: #999;
+}
+
+.new-note form .tags .added-tag {
+  float: left;
+  padding: 5px 10px;
+  margin: 2px 5px;
+  background-color: #fd0;
+  border-radius: 5px;
+}
+
+.new-note form .tags .added-tag i {
+  position: relative;
+  top: 3px;
+  right: 1px;
+  cursor: pointer;
 }
