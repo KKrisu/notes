@@ -26,6 +26,10 @@ body {
   border-radius: 5px;
 }
 
+.new-note form .tags .added-tag input {
+  width: 200px;
+}
+
 .new-note form .tags .added-tag i {
   position: relative;
   top: 3px;

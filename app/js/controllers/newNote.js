@@ -15,7 +15,7 @@ angular.module('notes')
 
     // TODO: should be sorted by occurence
     $scope.tags = {
-        saved: ['programming', 'js', 'stx', 'webgl', 'live', 'wife'],
+        saved: ['programming', 'js', 'stx', 'webgl', 'live', 'wife', 'php', 'html'],
         selected: ['js', 'programming'],
         newTag: '',
 
@@ -45,6 +45,11 @@ angular.module('notes')
         _.remove($scope.tags.selected, function (t) {
             return t === tag;
         });
+    };
+
+    $scope.tagFilter = function () {
+        pr('tagFilter', arguments);
+        return true;
     };
 
 });
