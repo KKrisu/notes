@@ -1,0 +1,15 @@
+
+# db on ubuntu
+notes_db
+notes_u
+notes_p
+
+# creating db on ubuntu
+
+# to run app
+
+$ grunt dev
+$ cd app
+$ python -m SimpleHTTPServer
+localhost:8000
+

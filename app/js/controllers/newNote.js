@@ -10,7 +10,7 @@ angular.module('notes')
     };
 
     $scope.saveEntry = function () {
-        pr('to save:', $scope.form);
+        pr('to save:', $scope.form, 'tags:', $scope.tags.selected);
     };
 
     // TODO: should be sorted by occurence
@@ -46,10 +46,4 @@ angular.module('notes')
             return t === tag;
         });
     };
-
-    $scope.tagFilter = function () {
-        pr('tagFilter', arguments);
-        return true;
-    };
-
 });

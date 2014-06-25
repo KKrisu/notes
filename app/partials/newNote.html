@@ -1,11 +1,11 @@
 <h2>New Entry</h2>
 <form role="form" ng-submit="saveEntry()">
     <div class="row">
-        <input type="text" class="form-control col-xs-12" placeholder="Title">
+        <input ng-model="form.title" type="text" class="form-control col-xs-12" placeholder="Title" required>
     </div>
     <div class="row">
 
-        <textarea class="col-xs-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.content"></textarea>
+        <textarea class="col-xs-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.content" required></textarea>
 
         <div class="preview col-xs-6" ng-bind-html="form.content | markdownToHtml"></div>
 
@@ -17,7 +17,7 @@
             <i class="icon glyphicon glyphicon-remove" ng-click="cancelTag(tag)"></i>
         </div>
 
-        <input type="text" class="form-control input-sm name" ng-model="tags.newTag" placeholder="Select tag" typeahead="option for option in tags.saved | filter:$viewValue | limitTo:8 | filter:tags.selected:tagFilter" typeahead-on-select="typeaheadSelected()" required />
+        <input type="text" class="form-control input-sm name" ng-model="tags.newTag" placeholder="Select tag" typeahead="option for option in tags.saved | filter:$viewValue | limitTo:8" typeahead-on-select="typeaheadSelected()" />
 
     </div>
     <button type="submit" class="btn">Save</button>

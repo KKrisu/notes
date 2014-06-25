@@ -15,7 +15,12 @@ body {
 }
 
 .new-note form .preview {
+  white-space: pre;
   background-color: #999;
+}
+
+.new-note form .tags input {
+  width: 200px;
 }
 
 .new-note form .tags .added-tag {
@@ -24,10 +29,6 @@ body {
   margin: 2px 5px;
   background-color: #fd0;
   border-radius: 5px;
-}
-
-.new-note form .tags .added-tag input {
-  width: 200px;
 }
 
 .new-note form .tags .added-tag i {
