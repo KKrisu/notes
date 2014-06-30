@@ -1,15 +1,18 @@
 
-# db on ubuntu
-notes_db
-notes_u
-notes_p
+# db on ubuntu:
+db: notes_db
+u:  notes_u
+p:  notes_p
 
-# creating db on ubuntu
+# creating db on ubuntu:
 
-# to run app
+# to run app:
 
 $ grunt dev
 $ cd app
 $ python -m SimpleHTTPServer
 localhost:8000
 
+# markdown editor
+http://markitup.jaysalvat.com/
+http://markitup.jaysalvat.com/examples/

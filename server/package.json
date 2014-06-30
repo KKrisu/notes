@@ -1,0 +1,16 @@
+{
+  "name": "notes.pl",
+  "version": "0.0.1",
+  "description": "memory notes",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kris Kodzi",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "mysql": "~2.3.2",
+    "express": "~4.4.5",
+    "q": "~1.0.1"
+  }
+}
