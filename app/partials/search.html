@@ -1,10 +1,12 @@
-<h2>
-    Search Results:
-</h2>
-<article ng-repeat="result in results" class="result-item">
-    <h3 class="header">
-        <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
-    </h3>
-    <div class="body">{{ result.body | limitTo:200 }}</div>
-    <footer>{{ result.created | limitTo:10 }}</footer>
-</article>
+<section class="search">
+    <h2>
+        Search Results:
+    </h2>
+    <article ng-repeat="result in results" class="result-item">
+        <h3 class="header">
+            <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
+        </h3>
+        <div class="body">{{ result.body | limitTo:200 }}</div>
+        <footer>{{ result.created | limitTo:10 }}</footer>
+    </article>
+</section>

@@ -20,6 +20,19 @@ app.get('/api/v1/posts', function(req, res) {
     });
 });
 
+app.get('/api/v1/posts/:id', function(req, res) {
+    model.getSinglePost(req.params).then(function (result) {
+        res.type('application/json');
+        res.send(result);
+    }, function (err) {
+        if(err.message === 'no results') {
+            res.send(404, 'There is no entry with specified value');
+        } else {
+            res.send(500);
+        }
+    });
+});
+
 app.post('/api/v1/posts', function (req, res) {
     model.savePost().then(function () {
 
