@@ -6,6 +6,7 @@ angular.module('notes')
 
     api.all('posts').getList().then(function (data) {
         pr('success', data);
+        $scope.results = data;
     }, function () {
         pr('fail', arguments);
     });

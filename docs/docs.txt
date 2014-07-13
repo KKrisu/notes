@@ -11,9 +11,7 @@ p:  notes_p
 $ grunt dev
 $ cd server
 $ nodemon server.js
-$ cd ../app
-$ python -m SimpleHTTPServer
-localhost:8000
+localhost:9000
 
 # markdown editor
 http://markitup.jaysalvat.com/
