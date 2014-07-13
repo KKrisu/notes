@@ -2,7 +2,7 @@
 var directoriesToClean = [/*'app/vendors/*'*/];
 
 var recessConf = {
-    'app/app.css': [
+    'app/static/app.css': [
         'app/less/*.less'
     ]
 };
@@ -26,16 +26,16 @@ module.exports = function(grunt) {
         copy: {
             bootstrap: {
                 files: [{
-                    dest: 'app/vendors/css/bootstrap.css',
+                    dest: 'app/static/vendors/css/bootstrap.css',
                     src: 'bower_components/bootstrap/dist/css/bootstrap.min.css'
                 }, {
-                    dest: 'app/vendors/bootstrap-less/',
+                    dest: 'app/static/vendors/bootstrap-less/',
                     src: 'bower_components/bootstrap/less/*.less',
                     filter: 'isFile',
                     expand: true,
                     flatten: true
                 }, {
-                    dest: 'app/vendors/fonts/',
+                    dest: 'app/static/vendors/fonts/',
                     src: 'bower_components/bootstrap/dist/fonts/*',
                     filter: 'isFile',
                     expand: true,
@@ -69,7 +69,7 @@ module.exports = function(grunt) {
         // Watches the js and less files and concats/compiles them on file save - development
         watch: {
             js_vendors: {
-                files: 'app/vendors/vendors.js',
+                files: 'app/static/vendors/vendors.js',
                 tasks: ['concat:vendors']
             },
             js_app: {

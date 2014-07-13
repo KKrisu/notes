@@ -7,8 +7,8 @@
 
         <meta name="description" content="">
 
-        <link rel="stylesheet" href="vendors/css/bootstrap.css">
-        <link rel="stylesheet" href="app.css">
+        <link rel="stylesheet" href="static/vendors/css/bootstrap.css">
+        <link rel="stylesheet" href="static/app.css">
     </head>
     <body ng-app="notes">
 
@@ -25,12 +25,12 @@
                 new Note
             </div>
 
-            <div ng-controller="search">
+            <div ng-controller="search" ng-include="'/partials/search.html'">
             </div>
 
-            <script src="vendors/vendors.js"></script>
-            <script src="vendors/markdown.js"></script>
-            <script src="compiled.js"></script>
+            <script src="static/vendors/vendors.js"></script>
+            <script src="static/vendors/markdown.js"></script>
+            <script src="static/compiled.js"></script>
 
         </div>
 

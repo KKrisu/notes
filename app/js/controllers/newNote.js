@@ -6,7 +6,7 @@ angular.module('notes')
 
 
     $scope.contentUpdated = function () {
-        // TODO: presave every minute or something
+        // TODO: pre-save every minute or something
     };
 
     $scope.saveEntry = function () {
@@ -19,7 +19,7 @@ angular.module('notes')
         selected: ['js', 'programming'],
         newTag: '',
 
-        // TODO: decide: use this or no??
+        // TODO: decide: use this or not??
         similarityTags: [
             ['programming', 'development', 'code', 'coding']
         ]

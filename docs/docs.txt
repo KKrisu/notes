@@ -9,7 +9,9 @@ p:  notes_p
 # to run app:
 
 $ grunt dev
-$ cd app
+$ cd server
+$ nodemon server.js
+$ cd ../app
 $ python -m SimpleHTTPServer
 localhost:8000
 
