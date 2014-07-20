@@ -5,7 +5,7 @@ var dbConnection = mysql.createConnection({
     host     : 'localhost',
     user     : 'notes_u',
     password : 'notes_p',
-    database : 'notes_db'
+    database : 'notes_db_dev'
 });
 var Q = require('q');
 
@@ -105,7 +105,61 @@ module.exports = {
         return defer.promise;
     },
 
-    saveTag: function () {
-        // TODO:
+    getSingleTag: function(data) {
+
+        var defer = Q.defer();
+        var query = 'SELECT * FROM tags WHERE id = ? LIMIT 1';
+
+        dbConnection.query(query, [data.id],
+            function(err, rows) {
+                if(err) {
+                    console.error(err);
+                    defer.reject(new Error(err));
+                    return false;
+                }
+                if(!rows.length) {
+                    defer.reject(new Error('no results'));
+                    return false;
+                }
+
+                var result = rows[0];
+                defer.resolve(result);
+            }
+        );
+        return defer.promise;
+    },
+
+    saveTag: function(data) {
+
+        var query, preparedStatment;
+        var defer = Q.defer();
+
+        if(!data.id) {
+            // creates new tag
+            // TODO: check duplicates
+            query = 'INSERT INTO tags' +
+                    '(name) VALUES (?)';
+            preparedStatment = [data.name];
+        } else {
+            // updates existing tag
+            query = 'UPDATE tags AS tag ' +
+                    'SET tag.name = ? ' +
+                    'WHERE tag.id = ?';
+            preparedStatment = [data.name, data.id];
+        }
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
+            if(err) {
+                console.error(err);
+                defer.reject(new Error(err));
+                return false;
+            }
+
+            // insertId available when INSERTING new entry
+            // data.id when updating existing one
+            defer.resolve(rows.insertId || data.id);
+        });
+
+        return defer.promise;
     }
 };
