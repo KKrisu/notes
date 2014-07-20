@@ -30,8 +30,12 @@ module.exports = {
     },
 
     getSinglePost: function (data) {
+        var _this = this;
+
         var defer = Q.defer();
-        dbConnection.query('SELECT * FROM posts WHERE id=' + data.id + ' LIMIT 1',
+        var query = 'SELECT * FROM posts WHERE id = ? LIMIT 1';
+
+        dbConnection.query(query, [data.id],
             function(err, rows) {
                 if(err) {
                     console.error(err);
@@ -42,7 +46,43 @@ module.exports = {
                     defer.reject(new Error('no results'));
                     return false;
                 }
-                defer.resolve(rows[0]);
+
+                var result = rows[0];
+                _this.getPostTags({post_id: data.id}).then(function (tags) {
+                    result.tags = tags;
+                    defer.resolve(result);
+                }, function (err) {
+                    defer.reject(err);
+                });
+            }
+        );
+        return defer.promise;
+    },
+
+    /**
+     * Returns tags of single post.
+     *
+     * @param {Object} data Config data.
+     */
+    getPostTags: function (data) {
+
+        var defer = Q.defer();
+        var query = 'SELECT * FROM tags as tag ' +
+                    'JOIN posts_tags AS p_t ON tag.id = p_t.tag_id ' +
+                    'WHERE p_t.post_id = ?';
+
+        dbConnection.query(query, [data.post_id],
+            function(err, rows) {
+                if(err) {
+                    console.error(err);
+                    defer.reject(new Error(err));
+                    return false;
+                }
+                if(!rows.length) {
+                    defer.reject(new Error('no results'));
+                    return false;
+                }
+                defer.resolve(rows);
             }
         );
         return defer.promise;

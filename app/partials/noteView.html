@@ -1,3 +1,12 @@
 <section class="new-view">
-    <h2>Note view</h2>
+    <h2>{{ note.title }}</h2>
+    <small>created: {{ note.created }}</small>
+    <small>updated: {{ note.updated }}</small>
+    <div class="preview" ng-bind-html="note.body | markdownToHtml"></div>
+    <div>
+        <span>tags:</span>
+        <span ng-repeat="tag in note.tags">
+            <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
+        </span>
+    </div>
 </section>

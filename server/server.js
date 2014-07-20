@@ -13,6 +13,7 @@ app.get('/', function(req, res) {
     res.sendfile(path.join(__dirname, '../app/index.html'));
 });
 
+// search
 app.get('/api/v1/posts', function(req, res) {
     model.getPosts().then(function (result) {
         res.type('application/json');
@@ -20,6 +21,7 @@ app.get('/api/v1/posts', function(req, res) {
     });
 });
 
+// fetching single post
 app.get('/api/v1/posts/:id', function(req, res) {
     model.getSinglePost(req.params).then(function (result) {
         res.type('application/json');
