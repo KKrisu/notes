@@ -8,6 +8,7 @@ var dbConnection = mysql.createConnection({
     database : 'notes_db_dev'
 });
 var Q = require('q');
+var _ = require('lodash');
 
 dbConnection.connect();
 
@@ -52,7 +53,8 @@ module.exports = {
                     result.tags = tags;
                     defer.resolve(result);
                 }, function (err) {
-                    defer.reject(err);
+                    // resolving defer without tags
+                    defer.resolve(result);
                 });
             }
         );
@@ -88,13 +90,124 @@ module.exports = {
         return defer.promise;
     },
 
-    savePost: function () {
-        // TODO:
+    savePost: function (data) {
+        var _this = this;
+
+        var query, preparedStatment;
+        var defer = Q.defer();
+
+        if(!data.id) {
+            // creates new posts
+            query = 'INSERT INTO posts ' +
+                    '(title, body) VALUES (?, ?)';
+            preparedStatment = [data.title, data.body];
+        } else {
+            // updates existing post
+            query = 'UPDATE tags AS posts ' +
+                    'SET tag.title = ?, ' +
+                    'SET tag.body = ? ' +
+                    'WHERE tag.id = ?';
+            preparedStatment = [data.title, data.body, data.id];
+        }
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
+            if(err) {
+                console.error(err);
+                defer.reject(new Error(err.message));
+                return false;
+            }
+
+            var resolve = function () {
+                // insertId available when INSERTING new entry
+                // data.id when updating existing one
+                defer.resolve(rows.insertId || data.id);
+            };
+
+            if(!data.tags || !data.tags.length) {
+                resolve();
+            }
+
+            var updateTags = function (currentTags) {
+                var tagsPromises = [];
+
+                for(var i = 0; i < data.tags.length; i++) {
+                    if(!currentTags) {
+                        tagsPromises.push(_this.matchPostWithTag(
+                            rows.insertId || data.id,
+                            data.tags[i]
+                        ));
+                    }
+                }
+
+                Q.all(tagsPromises).then(function () {
+                    resolve();
+                }, function (err) {
+                    defer.reject(new Error(err.message));
+                });
+            }
+
+            if(!data.id) {
+                // new entry
+                updateTags();
+            } else {
+                // updating existing entry
+                _this.getPostTags().then(function (currentTags) {
+                    var tagsArr = _.reduce(currentTags, function (result, tag) {
+                        return result.push(tag.id);
+                    }, []);
+                    updateTags(tagsArr);
+                }, function (err) {
+                    defer.reject(new Error(err.message));
+                })
+            }
+
+        });
+
+        return defer.promise;
+    },
+
+    matchPostWithTag: function (postId, tagId) {
+        pr('matchPostWithTag', postId, tagId);
+        var defer = Q.defer();
+        var query = 'INSERT INTO posts_tags ' +
+                '(post_id, tag_id) VALUES (?, ?)';
+        var preparedStatment = [postId, tagId];
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
+            if(err) {
+                console.error(err);
+                defer.reject(new Error(err.message));
+                return false;
+            }
+
+            defer.resolve(rows.insertId);
+        });
+
+        return defer.promise;
+    },
+
+    disconnectPostWithTag: function (postId, tagId) {
+        var defer = Q.defer();
+        var query = 'DELETE FROM posts_tags ' +
+                'WHERE post_id = ? AND tag_id = ?';
+        var preparedStatment = [postId, tagId];
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
+            if(err) {
+                console.error(err);
+                defer.reject(new Error(err.message));
+                return false;
+            }
+
+            defer.resolve(rows.insertId);
+        });
+
+        return defer.promise;
     },
 
     getTags: function () {
         var defer = Q.defer();
-        dbConnection.query('SELECT * FROM tags', function(err, rows, fields) {
+        dbConnection.query('SELECT * FROM tags', function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err));

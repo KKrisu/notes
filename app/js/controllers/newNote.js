@@ -1,31 +1,48 @@
 angular.module('notes')
-.controller('newNote', function ($scope) {
+.controller('newNote', function ($scope, $location, savedTags, api) {
     'use strict';
 
+    pr(savedTags);
     $scope.form = {};
-
 
     $scope.contentUpdated = function () {
         // TODO: pre-save every minute or something
     };
 
     $scope.saveEntry = function () {
-        pr('to save:', $scope.form, 'tags:', $scope.tags.selected);
+
+        // sending only list of tags ids to API
+        if($scope.tags.selected.length) {
+            $scope.form.tags = _.reduce($scope.tags.selected,
+                function (result, tag) {
+                    var foundTag = _.find(savedTags, function(_tag) {
+                        return _tag.name === tag;
+                    });
+                    if(foundTag) {
+                        result.push(foundTag.id);
+                    }
+                    return result;
+                },
+            []);
+        }
+
+        pr('to save:', $scope.form);
+
+        api.all('posts').post($scope.form).then(function(result) {
+            $location.path('/posts/' + result.id);
+        }, function () {
+            pr('saving error', arguments);
+        });
     };
 
     // TODO: should be sorted by occurence
     $scope.tags = {
-        saved: ['programming', 'js', 'stx', 'webgl', 'live', 'wife', 'php', 'html'],
-        selected: ['js', 'programming'],
-        newTag: '',
-
-        // TODO: decide: use this or not??
-        similarityTags: [
-            ['programming', 'development', 'code', 'coding']
-        ]
+        saved: _.map(savedTags, 'name'),
+        selected: []
     };
 
     $scope.typeaheadSelected = function () {
+        pr('typeaheadSelected');
 
         if($scope.tags.selected.indexOf($scope.tags.newTag) >= 0) {
             pr('tag already exists');

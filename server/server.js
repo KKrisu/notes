@@ -38,8 +38,11 @@ app.get('/api/v1/posts/:id', function(req, res) {
 });
 
 app.post('/api/v1/posts', function (req, res) {
-    model.savePost().then(function () {
-
+    model.savePost(req.body).then(function (id) {
+        res.send({id: id});
+    }, function (err) {
+        console.error('Saving new post fail.');
+        res.send(500, err.message);
     });
 });
 

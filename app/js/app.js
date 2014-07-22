@@ -13,11 +13,30 @@ angular.module('notes', [
     })
     .when('/posts/new', {
         templateUrl: '/partials/newNote.html',
-        controller: 'newNote'
+        controller: 'newNote',
+        resolve: {
+            savedTags: function (api) {
+                return api.all('tags').getList().then(null, function() {
+                    // TODO: handle global error somehow
+                });
+            }
+        }
     })
     .when('/posts/:id', {
         templateUrl: '/partials/noteView.html',
         controller: 'noteView'
+    })
+    .when('/tags', {
+        templateUrl: '/partials/tags.html',
+        controller: 'tags'
+    })
+    .when('/tags/new', {
+        templateUrl: '/partials/editTag.html',
+        controller: 'tag'
+    })
+    .when('/tags/:id', {
+        templateUrl: '/partials/editTag.html',
+        controller: 'tag'
     })
     .otherwise({
         redirectTo: '/search'
