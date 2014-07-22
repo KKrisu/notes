@@ -1,5 +1,8 @@
 <section class="new-view">
-    <h2>{{ note.title }}</h2>
+    <h2>
+        {{ note.title }}
+        [<a href="#/posts/{{ note.id }}/edit">edit</a>]
+    </h2>
     <small>created: {{ note.created }}</small>
     <small>updated: {{ note.updated }}</small>
     <div class="preview" ng-bind-html="note.body | markdownToHtml"></div>

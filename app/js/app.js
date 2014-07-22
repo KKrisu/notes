@@ -12,19 +12,29 @@ angular.module('notes', [
         controller: 'search'
     })
     .when('/posts/new', {
-        templateUrl: '/partials/newNote.html',
-        controller: 'newNote',
+        templateUrl: '/partials/editNote.html',
+        controller: 'editNote',
         resolve: {
             savedTags: function (api) {
-                return api.all('tags').getList().then(null, function() {
-                    // TODO: handle global error somehow
-                });
+                return api.all('tags').getList();
             }
         }
     })
     .when('/posts/:id', {
         templateUrl: '/partials/noteView.html',
         controller: 'noteView'
+    })
+    .when('/posts/:id/edit', {
+        templateUrl: '/partials/editNote.html',
+        controller: 'editNote',
+        resolve: {
+            post: function ($route, api) {
+                return api.one('posts', $route.current.params.id).get();
+            },
+            savedTags: function (api) {
+                return api.all('tags').getList();
+            }
+        }
     })
     .when('/tags', {
         templateUrl: '/partials/tags.html',

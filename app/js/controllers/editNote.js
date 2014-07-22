@@ -1,9 +1,9 @@
 angular.module('notes')
-.controller('newNote', function ($scope, $location, savedTags, api) {
+.controller('editNote', function ($scope, $location, post, savedTags, api) {
     'use strict';
 
-    pr(savedTags);
-    $scope.form = {};
+    pr(post);
+    $scope.form = post || {};
 
     $scope.contentUpdated = function () {
         // TODO: pre-save every minute or something
@@ -40,6 +40,16 @@ angular.module('notes')
         saved: _.map(savedTags, 'name'),
         selected: []
     };
+    if($scope.form.tags && $scope.form.tags.length) {
+        // mapping existing tags to just array of names
+        // only in case of editing existing note
+        $scope.tags.selected = _.reduce($scope.form.tags,
+            function (result, tag) {
+                result.push(tag.name);
+                return result;
+            },
+        []);
+    }
 
     $scope.typeaheadSelected = function () {
         pr('typeaheadSelected');

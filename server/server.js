@@ -41,7 +41,7 @@ app.post('/api/v1/posts', function (req, res) {
     model.savePost(req.body).then(function (id) {
         res.send({id: id});
     }, function (err) {
-        console.error('Saving new post fail.');
+        console.error('Saving post fail.');
         res.send(500, err.message);
     });
 });

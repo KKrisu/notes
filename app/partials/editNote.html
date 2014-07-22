@@ -1,5 +1,6 @@
 <section class="new-note">
-    <h2>New Entry</h2>
+    <h2 ng-if="!form.id">New Entry</h2>
+    <h2 ng-if="form.id">Edit Entry</h2>
     <form role="form" ng-submit="saveEntry()">
         <div class="row">
             <input ng-model="form.title" type="text" class="form-control col-xs-12" placeholder="Title" required>

@@ -80,10 +80,6 @@ module.exports = {
                     defer.reject(new Error(err));
                     return false;
                 }
-                if(!rows.length) {
-                    defer.reject(new Error('no results'));
-                    return false;
-                }
                 defer.resolve(rows);
             }
         );
@@ -97,16 +93,16 @@ module.exports = {
         var defer = Q.defer();
 
         if(!data.id) {
-            // creates new posts
+            // creates new post
             query = 'INSERT INTO posts ' +
                     '(title, body) VALUES (?, ?)';
             preparedStatment = [data.title, data.body];
         } else {
             // updates existing post
-            query = 'UPDATE tags AS posts ' +
-                    'SET tag.title = ?, ' +
-                    'SET tag.body = ? ' +
-                    'WHERE tag.id = ?';
+            query = 'UPDATE posts AS post SET ' +
+                    'post.title = ?, ' +
+                    'post.body = ? ' +
+                    'WHERE post.id = ?';
             preparedStatment = [data.title, data.body, data.id];
         }
 
@@ -130,35 +126,44 @@ module.exports = {
             var updateTags = function (currentTags) {
                 var tagsPromises = [];
 
-                for(var i = 0; i < data.tags.length; i++) {
-                    if(!currentTags) {
+                _.each(data.tags, function (tag) {
+                    if(!currentTags || currentTags.indexOf(tag) < 0) {
                         tagsPromises.push(_this.matchPostWithTag(
                             rows.insertId || data.id,
-                            data.tags[i]
+                            tag
                         ));
                     }
-                }
+                });
+
+                var toRemove = _.difference(currentTags, data.tags);
+                _.each(toRemove, function (tag) {
+                    tagsPromises.push(_this.disconnectPostWithTag(
+                        data.id, tag
+                    ));
+                });
 
                 Q.all(tagsPromises).then(function () {
                     resolve();
                 }, function (err) {
                     defer.reject(new Error(err.message));
                 });
-            }
+            };
 
             if(!data.id) {
                 // new entry
                 updateTags();
             } else {
                 // updating existing entry
-                _this.getPostTags().then(function (currentTags) {
-                    var tagsArr = _.reduce(currentTags, function (result, tag) {
-                        return result.push(tag.id);
-                    }, []);
-                    updateTags(tagsArr);
-                }, function (err) {
-                    defer.reject(new Error(err.message));
-                })
+                _this.getPostTags({post_id: data.id}).then(
+                    function (currentTags) {
+                        var tagsArr = _.reduce(currentTags, function (result, tag) {
+                            result.push(tag.tag_id);
+                            return result;
+                        }, []);
+                        updateTags(tagsArr);
+                    }, function (err) {
+                        defer.reject(new Error(err.message));
+                    });
             }
 
         });
@@ -167,7 +172,6 @@ module.exports = {
     },
 
     matchPostWithTag: function (postId, tagId) {
-        pr('matchPostWithTag', postId, tagId);
         var defer = Q.defer();
         var query = 'INSERT INTO posts_tags ' +
                 '(post_id, tag_id) VALUES (?, ?)';
