@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
 
 // search
 app.get('/api/v1/posts', function(req, res) {
-    model.getPosts().then(function (result) {
+    model.getPosts(req.query).then(function (result) {
         res.type('application/json');
         res.send(result);
     });

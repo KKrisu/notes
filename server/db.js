@@ -13,20 +13,40 @@ var _ = require('lodash');
 dbConnection.connect();
 
 module.exports = {
-    getPosts: function () {
+    getPosts: function (params) {
         var defer = Q.defer();
-        // TODO: search by tags
         // TODO: search by titles
         // TODO: search by body
         // TODO: concatenate and return
-        dbConnection.query('SELECT * FROM posts', function(err, rows, fields) {
-            if(err) {
-                console.error(err);
-                defer.reject(new Error(err));
-                return false;
-            }
-            defer.resolve(rows);
-        });
+        var query = 'SELECT post.* FROM posts AS post';
+
+        var searchQuery = function () {
+            var q = dbConnection.query(query, function(err, rows, fields) {
+                if(err) {
+                    console.error(err);
+                    defer.reject(new Error(err));
+                    return false;
+                }
+                defer.resolve(rows);
+            });
+            pr(q.sql);
+        }
+
+        if(params.tag) {
+            this.getTags(params.tag).then(function (tags) {
+                var tags_ids = _.reduce(tags, function (result, tag) {
+                    result.push(tag.id);
+                    return result;
+                }, []);
+                query += ' JOIN posts_tags AS p_t ON p_t.post_id = post.id '+
+                    'WHERE p_t.tag_id IN (' + tags_ids.join(',') + ')';
+                searchQuery();
+            });
+        } else {
+            searchQuery();
+        }
+
+
         return defer.promise;
     },
 
@@ -209,9 +229,17 @@ module.exports = {
         return defer.promise;
     },
 
-    getTags: function () {
+    getTags: function (filter) {
         var defer = Q.defer();
-        dbConnection.query('SELECT * FROM tags', function(err, rows) {
+        var query = 'SELECT * FROM tags';
+        var preparedStatment = [];
+
+        if(filter) {
+            query += ' WHERE name LIKE ?';
+            preparedStatment.push('%' + filter + '%');
+        }
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err));
