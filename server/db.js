@@ -14,6 +14,7 @@ dbConnection.connect();
 
 module.exports = {
     getPosts: function (params) {
+        var _this = this;
         var defer = Q.defer();
         // TODO: search by titles
         // TODO: search by body
@@ -27,7 +28,17 @@ module.exports = {
                     defer.reject(new Error(err));
                     return false;
                 }
-                defer.resolve(rows);
+
+                var tagsPromises = [];
+                _.each(rows, function (row) {
+                    var promise = _this.getPostTags({post_id: row.id}).then(function (tags) {
+                        row.tags = tags;
+                    });
+                    tagsPromises.push(promise);
+                });
+                Q.all(tagsPromises).then(function () {
+                    defer.resolve(rows);
+                });
             });
             pr(q.sql);
         }

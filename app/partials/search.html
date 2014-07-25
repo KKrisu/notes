@@ -7,6 +7,12 @@
             <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
         </h3>
         <div class="body">{{ result.body | limitTo:200 }}</div>
-        <footer>{{ result.created | limitTo:10 }}</footer>
+        <footer>
+            {{ result.created | limitTo:10 }}
+            <span>tags:</span>
+            <span ng-repeat="tag in result.tags">
+                <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
+            </span>
+        </footer>
     </article>
 </section>
