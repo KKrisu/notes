@@ -44,12 +44,17 @@ module.exports = {
                 });
             });
             pr(q.sql);
-        }
+        };
 
         var addSearchByTagToQuery = function (searchTagBy) {
             var tagDefer = Q.defer();
 
             _this.getTags(searchTagBy).then(function (tags) {
+
+                if(!tags.length) {
+                    tagDefer.resolve();
+                    return;
+                }
 
                 var tags_ids = _.reduce(tags, function (result, tag) {
                     result.push(tag.id);
@@ -66,13 +71,12 @@ module.exports = {
         };
 
         if(params.any) {
-            // search by everyting
-
+            // search by anything
             addSearchByTagToQuery(params.any).then(function () {
-                query += 'OR post.body LIKE ? ' +
-                    'OR post.title LIKE ?';
-                preparedStatment.push('%' + params.any + '%');
-                preparedStatment.push('%' + params.any + '%');
+                query += 'OR post.body REGEXP ? ' +
+                    'OR post.title REGEXP ?';
+                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
                 searchQuery();
             });
 
@@ -273,8 +277,8 @@ module.exports = {
         var preparedStatment = [];
 
         if(filter) {
-            query += ' WHERE name LIKE ?';
-            preparedStatment.push('%' + filter + '%');
+            query += ' WHERE name REGEXP ?';
+            preparedStatment.push(filter.replace(/[ ]+/g, '|'));
         }
 
         dbConnection.query(query, preparedStatment, function(err, rows) {
