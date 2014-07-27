@@ -1,4 +1,16 @@
 <section class="search">
+    <form class="row" ng-submit="form.search()">
+        <div class="col-xs-4 col-xs-offset-1">
+            <input type="text" class="form-control" ng-model="form.input">
+        </div>
+        <div class="col-xs-2">
+            <select class="form-control" ng-options="o as o for o in searchByOptions" ng-model="form.searchBy">
+            </select>
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-primary">GO</button>
+        </div>
+    </form>
     <h2>
         Search Results:
     </h2>
