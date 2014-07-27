@@ -14,15 +14,18 @@ dbConnection.connect();
 
 module.exports = {
     getPosts: function (params) {
+        pr(params);
         var _this = this;
         var defer = Q.defer();
         // TODO: search by titles
         // TODO: search by body
         // TODO: concatenate and return
-        var query = 'SELECT post.* FROM posts AS post';
+        var query = 'SELECT DISTINCT post.* FROM posts AS post ';
+        var preparedStatment = [];
 
         var searchQuery = function () {
-            var q = dbConnection.query(query, function(err, rows, fields) {
+            var q = dbConnection.query(query, preparedStatment,
+            function(err, rows) {
                 if(err) {
                     console.error(err);
                     defer.reject(new Error(err));
@@ -43,17 +46,41 @@ module.exports = {
             pr(q.sql);
         }
 
-        if(params.tag) {
-            this.getTags(params.tag).then(function (tags) {
+        var addSearchByTagToQuery = function (searchTagBy) {
+            var tagDefer = Q.defer();
+
+            _this.getTags(searchTagBy).then(function (tags) {
+
                 var tags_ids = _.reduce(tags, function (result, tag) {
                     result.push(tag.id);
                     return result;
                 }, []);
-                query += ' JOIN posts_tags AS p_t ON p_t.post_id = post.id '+
-                    'WHERE p_t.tag_id IN (' + tags_ids.join(',') + ')';
+
+                query += 'JOIN posts_tags AS p_t ON p_t.post_id = post.id '+
+                    'WHERE p_t.tag_id IN (' + tags_ids.join(',') + ') ';
+
+                tagDefer.resolve();
+            });
+
+            return tagDefer.promise;
+        };
+
+        if(params.any) {
+            // search by everyting
+
+            addSearchByTagToQuery(params.any).then(function () {
+                query += 'OR post.body LIKE ? ' +
+                    'OR post.title LIKE ?';
+                preparedStatment.push('%' + params.any + '%');
+                preparedStatment.push('%' + params.any + '%');
                 searchQuery();
             });
+
+        } else if(params.tag) {
+            // search by tag
+            addSearchByTagToQuery(params.tag).then(searchQuery);
         } else {
+            // returns all posts
             searchQuery();
         }
 
