@@ -11,20 +11,20 @@
             <button type="submit" class="btn btn-primary">GO</button>
         </div>
     </form>
-    <h2>
-        Search Results:
+    <h2 class="text-center">
+        Found Results:
     </h2>
-    <article ng-repeat="result in results" class="result-item">
-        <h3 class="header">
+    <dl ng-repeat="result in results" class="result-item">
+        <dt>
             <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
-        </h3>
-        <div class="body">{{ result.body | limitTo:200 }}</div>
-        <footer>
+        </dt>
+        <dd class="body">{{ result.body | limitTo:200 }}</dd>
+        <footer class="text-lowercase">
             {{ result.created | limitTo:10 }}
             <span>tags:</span>
-            <span ng-repeat="tag in result.tags">
+            <span ng-repeat="tag in result.tags" class="tag">
                 <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
             </span>
         </footer>
-    </article>
+    </dl>
 </section>
