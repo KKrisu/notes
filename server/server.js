@@ -2,10 +2,12 @@
 
 global.pr = console.log.bind(console);
 var path = require('path');
+var fs = require('fs');
 var express = require('express');
 var app = express();
 var model = require('./db');
 var bodyParser = require('body-parser');
+var config = JSON.parse(fs.readFileSync('../config/app.json', 'utf8'));
 
 app.use('/static', express.static('../app/static'));
 app.use('/partials', express.static('../app/partials'));
@@ -78,4 +80,4 @@ app.post('/api/v1/tags', function(req, res) {
     });
 });
 
-app.listen(9000);
+app.listen(config.port);

@@ -21,3 +21,6 @@ vendors.js
 compiled.js
 
 app.css
+
+# this contains local app configuration
+config/app.json
