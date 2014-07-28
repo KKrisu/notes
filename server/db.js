@@ -1,11 +1,12 @@
 'use strict';
 
+var config = global.config.db;
 var mysql      = require('mysql');
 var dbConnection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'notes_u',
-    password : 'notes_p',
-    database : 'notes_db_dev'
+    host     : config.host,
+    user     : config.user,
+    password : config.password,
+    database : config.database
 });
 var Q = require('q');
 var _ = require('lodash');
