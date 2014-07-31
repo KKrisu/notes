@@ -53,7 +53,7 @@ module.exports = {
             _this.getTags(searchTagBy).then(function (tags) {
 
                 if(!tags.length) {
-                    tagDefer.resolve();
+                    tagDefer.reject();
                     return;
                 }
 
@@ -71,15 +71,22 @@ module.exports = {
             return tagDefer.promise;
         };
 
+        var addSearchByBodyAndTitle = function () {
+            query += 'post.body REGEXP ? ' +
+                'OR post.title REGEXP ? ';
+            preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+            preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+        };
+
         if(params.any) {
             // search by anything
             addSearchByTagToQuery(params.any).then(function () {
-                query += 'OR post.body REGEXP ? ' +
-                    'OR post.title REGEXP ?';
-                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
-                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
-                searchQuery();
-            });
+                query += 'OR ';
+                addSearchByBodyAndTitle();
+            }, function () {
+                query += 'WHERE ';
+                addSearchByBodyAndTitle();
+            }).finally(searchQuery);
 
         } else if(params.tag) {
             // search by tag
