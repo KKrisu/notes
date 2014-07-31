@@ -35,6 +35,17 @@ angular.module('notes')
         });
     };
 
+    $scope.statuses = [{
+        id: 0,
+        name: 'draft'
+    }, {
+        id: 1,
+        name: 'public'
+    }, {
+        id: 8,
+        name: 'deleted'
+    }];
+
     // TODO: should be sorted by occurence
     $scope.tags = {
         saved: _.map(savedTags, 'name'),

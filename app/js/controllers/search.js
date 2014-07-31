@@ -17,10 +17,9 @@ angular.module('notes')
 
     var updateSearchResults = function () {
         api.all('posts').getList($location.search()).then(function (data) {
-            pr('success', data);
             $scope.results = data;
-        }, function () {
-            pr('fail', arguments);
+        }, function (err) {
+            console.error('fetching posts error', err);
         });
     };
 

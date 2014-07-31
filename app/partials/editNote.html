@@ -12,6 +12,10 @@
             <div class="preview col-xs-6" ng-bind-html="form.body | markdownToHtml"></div>
 
         </div>
+        <div>
+            <select class="form-control" ng-options="o.id as o.name for o in statuses" ng-model="form.status">
+            </select>
+        </div>
         <div class="row tags">
 
             <div class="added-tag" ng-repeat="tag in tags.selected">
