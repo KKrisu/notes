@@ -17,6 +17,9 @@ angular.module('notes', [
         resolve: {
             savedTags: function (api) {
                 return api.all('tags').getList();
+            },
+            post: function () {
+                return {};
             }
         }
     })

@@ -53,3 +53,4 @@ CREATE TABLE IF NOT EXISTS `relative_tag` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+ALTER TABLE posts ADD `status` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '1-active\n0-draft\n8-deleted';

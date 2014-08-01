@@ -15,16 +15,38 @@ dbConnection.connect();
 
 module.exports = {
     getPosts: function (params) {
-        pr(params);
+        // pr(params);
         var _this = this;
         var defer = Q.defer();
-        // TODO: search by titles
-        // TODO: search by body
-        // TODO: concatenate and return
         var query = 'SELECT DISTINCT post.* FROM posts AS post ';
         var preparedStatment = [];
+        var conditions = {
+            OR: [],
+            AND: []
+        };
+
+        if(typeof params.status === 'undefined') {
+            // be default displaying active
+            params.status = 1;
+        }
 
         var searchQuery = function () {
+            conditions.AND.push('post.status = ?');
+            preparedStatment.push(params.status);
+
+            if(conditions.OR.length || conditions.AND.length) {
+                query += ' WHERE ';
+                if(conditions.OR.length) {
+                    query += conditions.OR.join(' OR ');
+                    if(conditions.AND.length) {
+                        query += ' AND ';
+                    }
+                }
+                if(conditions.AND.length) {
+                    query += conditions.AND.join(' AND ');
+                }
+            }
+
             var q = dbConnection.query(query, preparedStatment,
             function(err, rows) {
                 if(err) {
@@ -44,7 +66,7 @@ module.exports = {
                     defer.resolve(rows);
                 });
             });
-            pr(q.sql);
+            // pr(q.sql);
         };
 
         var addSearchByTagToQuery = function (searchTagBy) {
@@ -62,8 +84,9 @@ module.exports = {
                     return result;
                 }, []);
 
-                query += 'JOIN posts_tags AS p_t ON p_t.post_id = post.id '+
-                    'WHERE p_t.tag_id IN (' + tags_ids.join(',') + ') ';
+                query += 'JOIN posts_tags AS p_t ON p_t.post_id = post.id ';
+
+                conditions.OR.push('p_t.tag_id IN (' + tags_ids.join(',') + ')');
 
                 tagDefer.resolve();
             });
@@ -71,13 +94,17 @@ module.exports = {
             return tagDefer.promise;
         };
 
+        var addSearchByBodyAndTitle = function () {
+            conditions.OR.push('post.body REGEXP ?');
+            conditions.OR.push('post.title REGEXP ?');
+            preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+            preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+        };
+
         if(params.any) {
             // search by anything
             addSearchByTagToQuery(params.any).then(function () {
-                query += 'OR post.body REGEXP ? ' +
-                    'OR post.title REGEXP ?';
-                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
-                preparedStatment.push(params.any.replace(/[ ]+/g, '|'));
+                addSearchByBodyAndTitle();
                 searchQuery();
             });
 
@@ -164,9 +191,10 @@ module.exports = {
             // updates existing post
             query = 'UPDATE posts AS post SET ' +
                     'post.title = ?, ' +
-                    'post.body = ? ' +
+                    'post.body = ?, ' +
+                    'post.status = ? ' +
                     'WHERE post.id = ?';
-            preparedStatment = [data.title, data.body, data.id];
+            preparedStatment = [data.title, data.body, data.status, data.id];
         }
 
         dbConnection.query(query, preparedStatment, function(err, rows) {

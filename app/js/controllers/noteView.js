@@ -6,11 +6,10 @@ angular.module('notes')
     var id = $route.current.params.id;
 
 
-    api.one('posts', id).get().then(function(data) {
-        pr('success', data);
+    api.one('posts', id).get().then(function (data) {
         $scope.note = data;
-    }, function(data) {
-        pr('failure', data);
+    }, function (err) {
+        console.error('fetching single post failure', err);
     });
 
 });
