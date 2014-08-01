@@ -15,7 +15,9 @@
             "bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js",
             "bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js",
 
-            "bower_components/lodash/dist/lodash.js"
+            "bower_components/lodash/dist/lodash.js",
+
+            "bower_components/Autolinker.js/dist/Autolinker.js"
 
         ],
         "destination": "app/static/vendors/vendors.js"

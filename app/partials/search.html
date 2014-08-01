@@ -20,10 +20,10 @@
         Found Results:
     </h2>
     <dl ng-repeat="result in results" class="result-item">
-        <dt>
-            <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
+        <dt class="title">
+            • <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
         </dt>
-        <dd class="body">{{ result.body | limitTo:200 }}</dd>
+        <dd class="body" ng-bind-html="result.body | limitTo:200 | markdownToHtml | autolinker"></dd>
         <footer class="text-lowercase">
             {{ result.created | limitTo:10 }}
             <span>tags:</span>
