@@ -7,6 +7,7 @@ angular.module('notes')
     $scope.form = {
         searchBy: 'any',
         input: '',
+        inputFocused: true,
         search: function () {
             $location.search('');
             $location.search($scope.form.searchBy, $scope.form.input);
@@ -31,7 +32,7 @@ angular.module('notes')
             // search by any by default
             $location.search('any', '');
             return;
-        };
+        }
 
         if( searchKey !== $scope.form.searchBy ||
             currentSearch[searchKey] !== $scope.form.input
