@@ -5,7 +5,7 @@
     </h2>
     <small>created: {{ note.created }}</small>
     <small>updated: {{ note.updated }}</small>
-    <div class="preview" ng-bind-html="note.body | markdownToHtml | autolinker"></div>
+    <div class="preview markdown" ng-bind-html="note.body | markdownToHtml | autolinker"></div>
     <div>
         <span>tags:</span>
         <span ng-repeat="tag in note.tags">
