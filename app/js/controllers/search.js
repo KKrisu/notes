@@ -14,7 +14,7 @@ angular.module('notes')
         }
     };
 
-    $scope.searchByOptions = ['any', 'tag'];
+    $scope.searchByOptions = ['any', 'tag', 'status'];
 
     var updateSearchResults = function () {
         api.all('posts').getList($location.search()).then(function (data) {
