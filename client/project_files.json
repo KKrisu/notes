@@ -17,10 +17,12 @@
 
             "bower_components/lodash/dist/lodash.js",
 
-            "bower_components/Autolinker.js/dist/Autolinker.js"
+            "bower_components/Autolinker.js/dist/Autolinker.js",
+
+            "js_vendors/markdown.js"
 
         ],
-        "destination": "static/vendors/vendors.js"
+        "destination": "app/static/vendors/vendors.js"
     },
 
     "app": {
@@ -28,7 +30,7 @@
             "js/core.js",
             "js/**/*.js"
         ],
-        "destination": "static/compiled.js"
+        "destination": "app/static/compiled.js"
     }
 
 }
