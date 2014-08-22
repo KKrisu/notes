@@ -1,9 +1,11 @@
 /* jshint node: true */
+'use strict';
+
 var directoriesToClean = [/*'app/vendors/*'*/];
 
 var recessConf = {
     'app/static/app.css': [
-        'app/less/*.less'
+        'less/*.less'
     ]
 };
 
@@ -12,7 +14,6 @@ var files = require('./project_files.json');
 
 
 module.exports = function(grunt) {
-    'use strict';
 
     grunt.initConfig({
 
@@ -69,19 +70,19 @@ module.exports = function(grunt) {
         // Watches the js and less files and concats/compiles them on file save - development
         watch: {
             js_vendors: {
-                files: 'app/static/vendors/vendors.js',
+                files: 'static/vendors/vendors.js',
                 tasks: ['concat:vendors']
             },
             js_app: {
                 files: [
-                    'app/js/**/*.js',
-                    'app/js/*.js',
-                    'app/partials/*'
+                    'js/**/*.js',
+                    'js/*.js',
+                    'partials/*'
                 ],
                 tasks: ['concat:app'] // compliling only app.js to speed up development
             },
             less: {
-                files: ['app/less/*.less'],
+                files: ['less/*.less'],
                 tasks: 'recess:concat'
             }
         },

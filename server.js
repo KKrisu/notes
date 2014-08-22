@@ -3,20 +3,20 @@
 global.pr = console.log.bind(console);
 var path = require('path');
 var fs = require('fs');
-var config = JSON.parse(fs.readFileSync('../config/app.json', 'utf8'));
+var config = JSON.parse(fs.readFileSync('./config/app.json', 'utf8'));
 global.config = config;
 
 var express = require('express');
 var app = express();
-var model = require('./db');
+var model = require('./server/db');
 var bodyParser = require('body-parser');
 
-app.use('/static', express.static('../app/static'));
-app.use('/partials', express.static('../app/partials'));
+app.use('/static', express.static('./client/static'));
+app.use('/partials', express.static('./client/partials'));
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-    res.sendfile(path.join(__dirname, '../app/index.html'));
+    res.sendfile(path.join(__dirname, './client/index.html'));
 });
 
 // search

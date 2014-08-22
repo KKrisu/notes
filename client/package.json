@@ -1,0 +1,31 @@
+{
+  "version": "0.0.1-1",
+  "description": "notes client",
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-uglify": "~0.2.5",
+    "grunt-recess": "~0.3.3",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-shell": "~0.3.1",
+    "grunt-angular-templates": "~0.4.7",
+    "grunt-ngmin": "0.0.3",
+    "mysql": "2.3.x",
+    "express": "4.4.x",
+    "q": "1.0.x",
+    "body-parser": "1.4.x",
+    "lodash": "2.4.x"
+  },
+  "jshintConfig": {
+    "indent": 4,
+    "node": true,
+    "globals": {
+      "angular": false,
+      "$": false,
+      "_": false,
+      "pr": false
+    }
+  }
+}

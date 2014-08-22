@@ -1,21 +1,27 @@
 {
+  "version": "0.0.1-1",
+  "scripts": {
+    "start": "server.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
   "name": "notes",
-  "version": "0.0.1",
-  "description": "notes",
+  "subdomain": "my-notes",
+  "description": "memory notes",
+  "main": "server.js",
+  "author": "Krzysztof Kesy @kriskodzi",
+  "license": "BSD-2-Clause",
   "dependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-watch": "~0.4.4",
-    "grunt-contrib-uglify": "~0.2.5",
-    "grunt-recess": "~0.3.3",
-    "grunt-contrib-clean": "~0.4.1",
-    "grunt-shell": "~0.3.1",
-    "grunt-angular-templates": "~0.4.7",
-    "grunt-ngmin": "0.0.3"
+    "mysql": "~2.3.2",
+    "express": "~4.4.5",
+    "q": "~1.0.1",
+    "body-parser": "~1.4.3",
+    "lodash": "~2.4.1"
   },
   "jshintConfig": {
     "indent": 4,
+    "node": true,
     "globals": {
       "angular": false,
       "$": false,
