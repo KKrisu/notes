@@ -11,7 +11,7 @@ var app = express();
 var model = require('./server/db');
 var bodyParser = require('body-parser');
 
-app.use('/static', express.static('./client/static'));
+app.use('/static', express.static('./client/app/static'));
 app.use('/partials', express.static('./client/partials'));
 app.use(bodyParser.json());
 
