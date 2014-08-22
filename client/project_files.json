@@ -20,15 +20,15 @@
             "bower_components/Autolinker.js/dist/Autolinker.js"
 
         ],
-        "destination": "app/static/vendors/vendors.js"
+        "destination": "static/vendors/vendors.js"
     },
 
     "app": {
         "include": [
-            "app/js/core.js",
-            "app/js/**/*.js"
+            "js/core.js",
+            "js/**/*.js"
         ],
-        "destination": "app/static/compiled.js"
+        "destination": "static/compiled.js"
     }
 
 }
