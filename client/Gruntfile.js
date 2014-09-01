@@ -42,6 +42,12 @@ module.exports = function(grunt) {
                     expand: true,
                     flatten: true
                 }]
+            },
+            ngProgress: {
+                files: [{
+                    dest: 'app/static/vendors/css/ngProgress.css',
+                    src: 'bower_components/ngprogress/ngProgress.css'
+                }]
             }
         },
 

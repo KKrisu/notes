@@ -1,5 +1,5 @@
 angular.module('notes')
-.controller('search', function ($scope, api, $location) {
+.controller('search', function ($scope, api, $location, ngProgress) {
     'use strict';
 
     $scope.results = [];
@@ -17,10 +17,13 @@ angular.module('notes')
     $scope.searchByOptions = ['any', 'tag', 'status'];
 
     var updateSearchResults = function () {
+        ngProgress.start();
         api.all('posts').getList($location.search()).then(function (data) {
             $scope.results = data;
+            ngProgress.complete();
         }, function (err) {
             console.error('fetching posts error', err);
+            ngProgress.reset();
         });
     };
 
