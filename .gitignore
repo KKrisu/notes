@@ -11,6 +11,8 @@ bower_components
 
 bootstrap-less
 
+client/app/static/vendors/css
+
 vendors.js
 
 compiled.js

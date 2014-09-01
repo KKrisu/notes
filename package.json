@@ -17,7 +17,8 @@
     "express": "~4.4.5",
     "q": "~1.0.1",
     "body-parser": "~1.4.3",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "basic-auth-connect": "~1.0.0"
   },
   "jshintConfig": {
     "indent": 4,

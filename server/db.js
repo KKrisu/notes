@@ -1,17 +1,35 @@
 'use strict';
 
-var config = global.config.db;
-var mysql      = require('mysql');
-var dbConnection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-});
+var dbConfig = global.config.db;
+var mysql = require('mysql');
+var dbConnection;
 var Q = require('q');
 var _ = require('lodash');
 
-dbConnection.connect();
+var reconnectWithDb = function () {
+    dbConnection = mysql.createConnection(dbConfig);
+
+    dbConnection.connect(function (err) {
+        if (err) {
+            console.error('error connecting wity mysql: ' + err);
+            setTimeout(reconnectWithDb, 2000);
+            return;
+        }
+
+        console.log('connected with mysql as id ' + dbConnection.threadId);
+    });
+
+    dbConnection.on('error', function (err) {
+        console.log('db connection error', err);
+        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+            reconnectWithDb();
+        } else {
+            throw err;
+        }
+    });
+};
+
+reconnectWithDb();
 
 module.exports = {
     getPosts: function (params) {
