@@ -7,12 +7,14 @@ var config = JSON.parse(fs.readFileSync('./config/app.json', 'utf8'));
 global.config = config;
 
 var express = require('express');
+var basicAuth = require('basic-auth-connect');
 var app = express();
 var model = require('./server/db');
 var bodyParser = require('body-parser');
 
 app.use('/static', express.static('./client/app/static'));
 app.use('/partials', express.static('./client/partials'));
+app.use(basicAuth(config.basicAuth.user, config.basicAuth.password));
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
