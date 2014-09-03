@@ -32,6 +32,8 @@ var reconnectWithDb = function () {
 reconnectWithDb();
 
 module.exports = {
+    reconnectDb: reconnectWithDb,
+
     getPosts: function (params) {
         // pr(params);
         var _this = this;

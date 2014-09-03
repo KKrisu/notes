@@ -9,17 +9,23 @@
 
         <link rel="stylesheet" href="static/vendors/css/bootstrap.css">
         <link rel="stylesheet" href="static/vendors/css/ngProgress.css">
+        <link rel="stylesheet" href="static/vendors/css/angular-growl.min.css">
         <link rel="stylesheet" href="static/app.css">
     </head>
     <body ng-app="notes">
 
         <div class="container">
 
-            <div class="header">
-                <ul class="nav nav-pills pull-right">
+            <div growl></div>
+
+            <div class="header" ng-controller="nav">
+                <ul class="nav nav-pills pull-left">
                     <li class="active"><a href="#/posts/new">New Post</a></li>
                     <li class="active"><a href="#/search">Search</a></li>
                     <li class="active"><a href="#/tags">Tags</a></li>
+                </ul>
+                <ul class="nav nav-pills pull-right">
+                    <li class="active"><a ng-click="reconnectDb()">reconnect db</a></li>
                 </ul>
             </div>
 

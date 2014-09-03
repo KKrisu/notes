@@ -84,4 +84,11 @@ app.post('/api/v1/tags', function(req, res) {
     });
 });
 
+app.post('/api/v1/commands', function (req, res) {
+    if(req.body.command === 'reconnect_db') {
+        model.reconnectDb();
+    }
+    res.send({result: true});
+});
+
 app.listen(config.port);

@@ -1,7 +1,8 @@
 window.pr = window.console.log.bind(window.console);
 angular.module('notesFilters', []);
 angular.module('notes', [
-    'notesFilters', 'ui.bootstrap', 'restangular', 'ngRoute', 'ngProgress'
+    'notesFilters', 'ui.bootstrap', 'restangular', 'ngRoute', 'ngProgress',
+    'angular-growl'
 ])
 
 .config(function($routeProvider) {
@@ -54,4 +55,9 @@ angular.module('notes', [
     .otherwise({
         redirectTo: '/search'
     });
-});
+})
+
+.config(['growlProvider', function(growlProvider) {
+    'use strict';
+    growlProvider.globalTimeToLive(3000);
+}]);

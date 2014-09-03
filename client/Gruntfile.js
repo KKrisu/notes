@@ -48,6 +48,12 @@ module.exports = function(grunt) {
                     dest: 'app/static/vendors/css/ngProgress.css',
                     src: 'bower_components/ngprogress/ngProgress.css'
                 }]
+            },
+            angularGrowl: {
+                files: [{
+                    dest: 'app/static/vendors/css/angular-growl.min.css',
+                    src: 'bower_components/angular-growl/build/angular-growl.min.css'
+                }]
             }
         },
 
