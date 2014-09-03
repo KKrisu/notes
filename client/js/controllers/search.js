@@ -1,5 +1,5 @@
 angular.module('notes')
-.controller('search', function ($scope, api, $location, ngProgress) {
+.controller('search', function ($scope, api, $location, ngProgress, growl) {
     'use strict';
 
     $scope.results = [];
