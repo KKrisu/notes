@@ -35,7 +35,7 @@ module.exports = {
     reconnectDb: reconnectWithDb,
 
     getPosts: function (params) {
-        // pr(params);
+        pr(params);
         var _this = this;
         var defer = Q.defer();
         var query = 'SELECT DISTINCT post.* FROM posts AS post ';
@@ -57,7 +57,7 @@ module.exports = {
             if(conditions.OR.length || conditions.AND.length) {
                 query += ' WHERE ';
                 if(conditions.OR.length) {
-                    query += conditions.OR.join(' OR ');
+                    query += '(' + conditions.OR.join(' OR ') + ')';
                     if(conditions.AND.length) {
                         query += ' AND ';
                     }
@@ -86,7 +86,7 @@ module.exports = {
                     defer.resolve(rows);
                 });
             });
-            // pr(q.sql);
+            pr(q.sql);
         };
 
         var addSearchByTagToQuery = function (searchTagBy) {
