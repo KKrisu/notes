@@ -20,12 +20,32 @@
 
             <div class="header" ng-controller="nav">
                 <ul class="nav nav-pills pull-left">
-                    <li class="active"><a href="#/posts/new">New Post</a></li>
-                    <li class="active"><a href="#/search">Search</a></li>
-                    <li class="active"><a href="#/tags">Tags</a></li>
+                    <li class="active">
+                        <a href="#/search">
+                            Search
+                            <span class="glyphicon glyphicon-search"></span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#/posts/new">
+                            New Post
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#/tags">
+                            Tags
+                            <span class="glyphicon glyphicon-tags"></span>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav nav-pills pull-right">
-                    <li class="active"><a ng-click="reconnectDb()">reconnect db</a></li>
+                    <li class="active">
+                        <a ng-click="reconnectDb()">
+                            reconnect db
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
