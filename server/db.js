@@ -57,7 +57,7 @@ module.exports = {
             if(conditions.OR.length || conditions.AND.length) {
                 query += ' WHERE ';
                 if(conditions.OR.length) {
-                    query += conditions.OR.join(' OR ');
+                    query += '(' + conditions.OR.join(' OR ') + ')';
                     if(conditions.AND.length) {
                         query += ' AND ';
                     }

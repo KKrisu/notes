@@ -92,3 +92,4 @@ app.post('/api/v1/commands', function (req, res) {
 });
 
 app.listen(config.port);
+console.info('Server has started listening on port', config.port);

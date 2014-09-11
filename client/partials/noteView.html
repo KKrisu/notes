@@ -7,9 +7,12 @@
     <small>updated: {{ note.updated }}</small>
     <div class="preview markdown" ng-bind-html="note.body | markdownToHtml | autolinker"></div>
     <div>
-        <span>tags:</span>
+        <span class="glyphicon glyphicon-tags"></span>&nbsp;
         <span ng-repeat="tag in note.tags">
             <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
+        </span>
+        <span>
+            <small>status:</small> {{ constants.notes.statuses[note.status] }}
         </span>
     </div>
 </section>
