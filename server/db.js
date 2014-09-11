@@ -35,7 +35,7 @@ module.exports = {
     reconnectDb: reconnectWithDb,
 
     getPosts: function (params) {
-        pr(params);
+        // pr(params);
         var _this = this;
         var defer = Q.defer();
         var query = 'SELECT DISTINCT post.* FROM posts AS post ';
@@ -86,7 +86,7 @@ module.exports = {
                     defer.resolve(rows);
                 });
             });
-            pr(q.sql);
+            // pr(q.sql);
         };
 
         var addSearchByTagToQuery = function (searchTagBy) {
