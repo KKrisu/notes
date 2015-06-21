@@ -120,11 +120,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('common', ['clean', 'copy']);
 
-    // Only runs development-level asset tasks.
     grunt.registerTask('dev', ['common', 'concat', 'recess:concat', 'watch']);
-
-    // Testing
-    // grunt.registerTask('pytest', ['shell:pytest']);
-    // grunt.registerTask('jstest', ['karma:normal']);
-    // grunt.registerTask('test', ['shell:pytest', 'karma:single']);
 };

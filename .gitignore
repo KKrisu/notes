@@ -21,3 +21,6 @@ app.css
 
 # this contains local app configuration
 config/app.json
+
+# this contains prod configuration
+config/app.prod.json
