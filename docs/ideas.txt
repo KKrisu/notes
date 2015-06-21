@@ -1,6 +1,8 @@
 
 # task management
-- ustawia sie priorytet. definiuje on czestotliwoscwysylania alertow o niewykonaniu taska
+- ustawia sie priorytet. definiuje on czestotliwosc wysylania alertow o niewykonaniu taska
 - prostota przede wszystkim
 
-- wyświetlać liczbę rezultatów
+- displaying number of results
+
+- material design

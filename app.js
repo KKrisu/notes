@@ -3,7 +3,9 @@
 global.pr = console.log.bind(console);
 var path = require('path');
 var fs = require('fs');
-var config = JSON.parse(fs.readFileSync('./config/app.json', 'utf8'));
+var configFile = 'app' +
+    (process.env.NODE_ENV === 'production' ? '.prod' : '') + '.json';
+var config = JSON.parse(fs.readFileSync('./config/' + configFile, 'utf8'));
 global.config = config;
 
 var express = require('express');
