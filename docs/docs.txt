@@ -1,14 +1,4 @@
 
-# db on ubuntu prod:
-db: notes_db
-u:  notes_u
-p:  notes_p
-
-# db on ubuntu prod_dev:
-db: notes_db_dev
-u:  notes_u
-p:  notes_p
-
 # creating db on ubuntu (http://stackoverflow.com/a/11979369/630409):
 $ mysql -u 'root' -p
 mysql> CREATE DATABASE IF NOT EXISTS  `test` ;
