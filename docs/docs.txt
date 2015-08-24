@@ -6,9 +6,10 @@ mysql> GRANT ALL PRIVILEGES ON  `test` . * TO  'test'@'localhost';
 
 # to run app:
 
+$ cd client
 $ grunt dev
-$ cd server
-$ nodemon server.js
+
+$ nodemon app.js
 localhost:9000
 
 # markdown editor

@@ -67,6 +67,8 @@ module.exports = {
                 }
             }
 
+            query += ' ORDER BY post.important DESC';
+
             var q = dbConnection.query(query, preparedStatment,
             function(err, rows) {
                 if(err) {
@@ -193,6 +195,39 @@ module.exports = {
                 defer.resolve(rows);
             }
         );
+        return defer.promise;
+    },
+
+    patchPost: function(id, body) {
+
+        var defer = Q.defer();
+
+        var query = 'UPDATE posts AS post SET ';
+        var queryUpdates = [];
+        var preparedStatment = [];
+
+        for(var i in body) {
+            if (body.hasOwnProperty(i)) {
+                queryUpdates.push('post.' + i + ' = ?');
+                preparedStatment.push(body[i]);
+            }
+        }
+
+        query += queryUpdates.join(' , ');
+        query += ' WHERE post.id = ?';
+
+        preparedStatment.push(id);
+
+        dbConnection.query(query, preparedStatment, function(err, rows) {
+            if(err) {
+                console.error(err);
+                defer.reject(new Error(err.message));
+                return false;
+            }
+
+            defer.resolve();
+        });
+
         return defer.promise;
     },
 

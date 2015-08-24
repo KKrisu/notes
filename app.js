@@ -54,6 +54,15 @@ app.post('/api/v1/posts', function (req, res) {
     });
 });
 
+app.patch('/api/v1/posts/:id', function (req, res) {
+    model.patchPost(req.params.id, req.body).then(function () {
+        res.send();
+    }, function (err) {
+        console.error('Pathing post fail.');
+        res.send(500, err.message);
+    });
+});
+
 app.get('/api/v1/tags', function (req, res) {
     model.getTags().then(function (result) {
         res.type('application/json');
