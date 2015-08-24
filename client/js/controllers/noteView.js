@@ -1,5 +1,7 @@
 angular.module('notes')
-.controller('noteView', function ($scope, $route, api, constants) {
+.controller('noteView', function (
+    $scope, $route, api, constants, commonMethods
+) {
     'use strict';
 
     var id = $route.current.params.id;
@@ -12,4 +14,12 @@ angular.module('notes')
         console.error('fetching single post failure', err);
     });
 
+    // updates important field of note
+    $scope.updateImportance = function (importantValue) {
+        commonMethods.updateImportance(id, importantValue).then(function () {
+            $scope.note.important = importantValue;
+        }, function (err) {
+            console.error('updating important field failure', err);
+        });
+    };
 });

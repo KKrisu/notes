@@ -2,7 +2,6 @@ angular.module('notes')
 .controller('editNote', function ($scope, $location, post, savedTags, api) {
     'use strict';
 
-    pr(post);
     $scope.form = post || {};
 
     $scope.contentUpdated = function () {

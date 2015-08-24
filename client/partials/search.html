@@ -21,12 +21,24 @@
     </form>
     <dl ng-repeat="result in results" class="result-item">
         <dt class="title">
-            • <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
+            •
+            <a href="#/posts/{{ result.id }}">{{ result.title }}</a>
         </dt>
         <dd class="body markdown" ng-bind-html="result.body | limitTo:200 | markdownToHtml | autolinker"></dd>
         <footer class="text-lowercase">
-            {{ result.created | limitTo:10 }}
-            <span class="glyphicon glyphicon-tags"></span>&nbsp;
+            <span class="important" title="importance">
+                ({{ result.important }})
+                <a ng-click="updateImportance(result.id, result.important + 1)">
+                    <span class="glyphicon glyphicon-arrow-up"></span>
+                </a>
+                <a ng-click="updateImportance(result.id, result.important -1)">
+                    <span class="glyphicon glyphicon-arrow-down"></span>
+                </a>
+            </span>
+            <span class="created date">{{ result.created | limitTo:10 }}</span>
+            &nbsp;&nbsp;
+            <span class="glyphicon glyphicon-tags"></span>
+            &nbsp;
             <span ng-repeat="tag in result.tags" class="tag">
                 <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
             </span>

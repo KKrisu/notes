@@ -1,5 +1,7 @@
 angular.module('notes')
-.controller('search', function ($scope, api, $location, ngProgress, growl) {
+.controller('search', function (
+    $scope, api, $location, ngProgress, commonMethods
+) {
     'use strict';
 
     $scope.results = [];
@@ -24,6 +26,18 @@ angular.module('notes')
         }, function (err) {
             console.error('fetching posts error', err);
             ngProgress.reset();
+        });
+    };
+
+    // updates important field of note
+    $scope.updateImportance = function (noteId, importantValue) {
+        commonMethods.updateImportance(noteId, importantValue).then(function () {
+            _.find($scope.results, function(item) {
+                return item.id === noteId;
+            }).important = importantValue;
+            updateSearchResults();
+        }, function (err) {
+            console.error('updating important field failure', err);
         });
     };
 
