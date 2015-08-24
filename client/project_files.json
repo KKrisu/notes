@@ -4,9 +4,12 @@
 
             "bower_components/jquery/jquery.js",
 
-
             "bower_components/angular/angular.js",
             "bower_components/angular-route/angular-route.js",
+            "bower_components/angular-animate/angular-animate.js",
+            "bower_components/angular-material/angular-material.js",
+            "bower_components/angular-material-icons/angular-material-icons.js",
+            "bower_components/angular-aria/angular-aria.js",
             "bower_components/restangular/dist/restangular.js",
             "bower_components/angular-growl-v2/build/angular-growl.js",
             "bower_components/ngprogress/build/ngProgress.js",

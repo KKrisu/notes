@@ -1,22 +1,46 @@
 <section class="search">
-    <form class="row" ng-submit="form.search()">
-        <div class="col-xs-4 col-xs-offset-1">
-            <input focus-me="form.inputFocused" type="text" class="form-control" ng-model="form.input">
+    <form ng-submit="form.search()">
+        <div layout="row" layout-align="center center" class="main-section">
+
+            <md-menu md-offset="10 10">
+
+                <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+                    <ng-md-icon md-menu-origin icon="more_vert"></ng-md-icon>
+                </md-button>
+
+                <md-menu-content width="6" layout="row">
+                    <md-menu-item>
+                        <md-select placeholder="Search By" ng-model="form.searchBy">
+                            <md-option ng-repeat="option in searchByOptions" value="{{ option }}">{{ option }}</md-option>
+                        </md-select>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button href="#/search?status=0">drafts</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button href="#/search?status=8">deleted</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <md-input-container>
+                <label>Search term</label>
+                <input focus-me="form.inputFocused"
+                        class="form-control"
+                        ng-model="form.input">
+            </md-input-container>
+
+            <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+                <ng-md-icon md-menu-origin icon="search"></ng-md-icon>
+            </md-button>
+
+
+
         </div>
-        <div class="col-xs-2">
-            <select class="form-control" ng-options="o as o for o in searchByOptions" ng-model="form.searchBy">
-            </select>
-        </div>
-        <div class="col-xs-2">
-            <button type="submit" class="btn btn-primary">
-                GO
-                <span class="glyphicon glyphicon-screenshot"></span>
-            </button>
-        </div>
-        <div class="col-xs-3">
-            <a href="#/search?status=0" class="pull-right">drafts</a>
-            <br>
-            <a href="#/search?status=8" class="pull-right">deleted</a>
+        <div layout="row" layout-align="center center" class="helpers">
+            <md-button class="md-raised md-primary" type="submit">
+                search
+            </md-button>
         </div>
     </form>
     <dl ng-repeat="result in results" class="result-item">

@@ -43,6 +43,18 @@ module.exports = function(grunt) {
                     flatten: true
                 }]
             },
+            angularMaterial: {
+                files: [{
+                    dest: 'app/static/vendors/css/angular-material.css',
+                    src: 'bower_components/angular-material/angular-material.css'
+                }]
+            },
+            angularMaterialIcons: {
+                files: [{
+                    dest: 'app/static/vendors/css/angular-material-icons.css',
+                    src: 'bower_components/angular-material-icons/angular-material-icons.css'
+                }]
+            },
             ngProgress: {
                 files: [{
                     dest: 'app/static/vendors/css/ngProgress.css',

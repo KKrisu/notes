@@ -2,7 +2,7 @@ window.pr = window.console.log.bind(window.console);
 angular.module('notesFilters', []);
 angular.module('notes', [
     'notesFilters', 'ui.bootstrap', 'restangular', 'ngRoute', 'ngProgress',
-    'angular-growl'
+    'angular-growl', 'ngMaterial', 'ngMdIcons'
 ])
 
 .config(function($routeProvider) {
@@ -57,7 +57,13 @@ angular.module('notes', [
     });
 })
 
-.config(['growlProvider', function(growlProvider) {
+.config(function(growlProvider) {
     'use strict';
     growlProvider.globalTimeToLive(3000);
-}]);
+})
+
+.config(function($mdThemingProvider) {
+    'use strict';
+    $mdThemingProvider.theme('default')
+        .primaryPalette('blue');
+});
