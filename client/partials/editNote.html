@@ -7,7 +7,7 @@
         </div>
         <div class="row">
 
-            <textarea class="col-xs-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.body" required></textarea>
+            <textarea class="col-xs-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.body" elastic required></textarea>
 
             <div class="col-xs-6 preview markdown" ng-bind-html="form.body | markdownToHtml | autolinker"></div>
 
