@@ -13,6 +13,8 @@ bootstrap-less
 
 client/app/static/vendors/css
 
+client/app/static/favicon.ico
+
 vendors.js
 
 compiled.js

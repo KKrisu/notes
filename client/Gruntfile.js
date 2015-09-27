@@ -54,7 +54,13 @@ module.exports = function(grunt) {
                     dest: 'app/static/vendors/css/angular-growl.min.css',
                     src: 'bower_components/angular-growl/build/angular-growl.min.css'
                 }]
-            }
+            },
+            favicon: {
+                files: [{
+                    dest: 'app/static/favicon.ico',
+                    src: 'assets/favicon.ico'
+                }]
+            },
         },
 
         // Concats the js files into static/ - development
