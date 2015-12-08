@@ -57,7 +57,7 @@ angular.module('notes', [
     });
 })
 
-.config(['growlProvider', function(growlProvider) {
+.config(function(growlProvider) {
     'use strict';
     growlProvider.globalTimeToLive(3000);
-}]);
+});

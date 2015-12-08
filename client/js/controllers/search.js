@@ -1,6 +1,6 @@
 angular.module('notes')
 .controller('search', function (
-    $scope, api, $location, ngProgress, commonMethods
+    $scope, $timeout, api, $location, ngProgress, commonMethods
 ) {
     'use strict';
 
@@ -17,6 +17,24 @@ angular.module('notes')
     };
 
     $scope.searchByOptions = ['any', 'tag', 'status'];
+
+    var searchDebounceTimer;
+    $scope.$watch('form.input', function(newVal, oldVal) {
+        if (newVal === oldVal) {
+            return;
+        }
+        if (newVal === $location.search()[$scope.form.searchBy]) {
+            return;
+        }
+        $timeout.cancel(searchDebounceTimer);
+        searchDebounceTimer = $timeout(function() {
+            $scope.form.search();
+        }, 500);
+    });
+
+    $scope.$on('$destroy', function() {
+        $timeout.cancel(searchDebounceTimer);
+    });
 
     var updateSearchResults = function () {
         ngProgress.start();
