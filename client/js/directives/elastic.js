@@ -11,6 +11,7 @@ angular.module('notes')
         restrict: 'A',
 
         link: function($scope, element) {
+            // check do I need this
             $scope.initialHeight = $scope.initialHeight || element[0].style.height;
 
             var resize = function() {

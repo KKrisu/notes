@@ -1,4 +1,32 @@
 .search {
+    form {
+        position: relative;
+        display: flex;
+        input {
+            width: 100%;
+        }
+        select {
+            width: 150px;
+        }
+        .settings {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            > * {
+                width: 100%;
+            }
+            label {
+                padding-left: 10px;
+            }
+        }
+        .settings-switcher {
+            width: 35px;
+        }
+    }
     .result-item {
         line-height: 0.2px;
 

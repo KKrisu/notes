@@ -1,4 +1,4 @@
-<section class="new-note">
+<section class="edit-note">
     <h2 ng-if="!form.id">New Entry</h2>
     <h2 ng-if="form.id">Edit Entry</h2>
     <form role="form" ng-submit="saveEntry()">
@@ -7,9 +7,9 @@
         </div>
         <div class="row">
 
-            <textarea class="col-xs-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.body" elastic required></textarea>
+            <textarea class="col-md-6 form-control" placeholder="Content" ng-keyup="contentUpdated()" ng-model="form.body" elastic required></textarea>
 
-            <div class="col-xs-6 preview markdown" ng-bind-html="form.body | markdownToHtml | autolinker"></div>
+            <div class="col-md-6 preview markdown" ng-bind-html="form.body | markdownToHtml | autolinker"></div>
 
         </div>
         <div>
