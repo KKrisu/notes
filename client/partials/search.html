@@ -1,24 +1,30 @@
 <section class="search">
-    <form class="row" ng-submit="form.search()">
-        <div class="col-xs-4 col-xs-offset-1">
-            <input focus-me="form.inputFocused" type="text" class="form-control" ng-model="form.input">
-        </div>
-        <div class="col-xs-2">
-            <select class="form-control" ng-options="o as o for o in searchByOptions" ng-model="form.searchBy">
-            </select>
-        </div>
-        <div class="col-xs-2">
-            <button type="submit" class="btn btn-primary">
-                GO
-                <span class="glyphicon glyphicon-screenshot"></span>
-            </button>
-        </div>
-        <div class="col-xs-3">
-            <a href="#/search?status=0" class="pull-right">drafts</a>
-            <br>
-            <a href="#/search?status=8" class="pull-right">deleted</a>
+
+    <form ng-submit="form.search()">
+
+        <input focus-me="form.inputFocused" type="text" class="form-control" ng-model="form.input">
+
+        <button type="submit" class="btn btn-primary">
+            GO
+            <span class="glyphicon glyphicon-screenshot"></span>
+        </button>
+
+        <button class="settings-switcher" ng-click="settingsVisible = !settingsVisible">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+
+        <div class="settings" ng-show="settingsVisible">
+            <label>search by:</label>
+            <select class="form-control" ng-options="o as o for o in searchByOptions" ng-model="form.searchBy"></select>
+            <hr>
+            <label>show by status:</label>
+            <ul>
+                <li><a href="#/search?status=0">drafts</a></li>
+                <li><a href="#/search?status=8">deleted</a></li>
+            </ul>
         </div>
     </form>
+
     <dl ng-repeat="result in results" class="result-item">
         <dt class="title">
             •
