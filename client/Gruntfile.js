@@ -85,7 +85,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // Watches the js and less files and concats/compiles them on file save - development
         watch: {
             js_vendors: {
                 files: 'static/vendors/vendors.js',
