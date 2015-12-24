@@ -1,5 +1,4 @@
-angular.module('notesFilters')
-.filter('autolinker', function ($sce) {
+module.exports = function ($sce) {
     'use strict';
 
     var autolinker = new window.Autolinker();
@@ -15,4 +14,4 @@ angular.module('notesFilters')
         return $sce.trustAsHtml(output);
 
     };
-});
+};

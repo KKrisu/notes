@@ -1,4 +1,4 @@
-angular.module('notes').service('commonMethods', function (api) {
+module.exports = function (api) {
     'use strict';
 
     this.updateImportance = function(id, importantValue) {
@@ -6,4 +6,4 @@ angular.module('notes').service('commonMethods', function (api) {
             important: importantValue
         });
     };
-});
+};

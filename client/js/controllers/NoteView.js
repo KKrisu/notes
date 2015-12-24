@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('noteView', function (
+module.exports = function (
     $scope, $route, api, constants, commonMethods
 ) {
     'use strict';
@@ -22,4 +21,4 @@ angular.module('notes')
             console.error('updating important field failure', err);
         });
     };
-});
+};

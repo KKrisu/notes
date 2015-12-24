@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('tags', function ($scope, $route, api) {
+module.exports = function ($scope, $route, api) {
     'use strict';
 
     api.all('tags').getList().then(function(data) {
@@ -9,4 +8,4 @@ angular.module('notes')
         pr('failure', data);
     });
 
-});
+};

@@ -66,13 +66,20 @@ module.exports = function(grunt) {
         // Concats the js files into static/ - development
         concat: {
             app: {
+                src: files.app.include,
                 dest: files.app.destination,
-                src: files.app.include
             },
             vendors: {
+                src: files.vendors.include,
                 dest: files.vendors.destination,
-                src: files.vendors.include
             },
+        },
+
+        browserify: {
+            app: {
+                src: files.browserify.include,
+                dest: files.browserify.destination
+            }
         },
 
         recess: {
@@ -96,7 +103,7 @@ module.exports = function(grunt) {
                     'js/*.js',
                     'partials/*'
                 ],
-                tasks: ['concat:app'] // compliling only app.js to speed up development
+                tasks: ['browserify:app'] // compliling only app.js to speed up development
             },
             less: {
                 files: ['less/*.less'],
@@ -122,8 +129,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-browserify');
 
     grunt.registerTask('common', ['clean', 'copy']);
 
-    grunt.registerTask('dev', ['common', 'concat', 'recess:concat', 'watch']);
+    // grunt.registerTask('dev', ['common', 'browserify', 'concat', 'recess:concat', 'watch']);
+    grunt.registerTask('dev', ['common', 'browserify:app', 'recess:concat', 'watch']);
 };
