@@ -28,9 +28,14 @@
 
     "app": {
         "include": [
-            "js/core.js",
+            "js/app.js",
             "js/**/*.js"
         ],
+        "destination": "app/static/compiled.js"
+    },
+
+    "browserify": {
+        "include": "js/app.js",
         "destination": "app/static/compiled.js"
     }
 

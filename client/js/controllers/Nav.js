@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('nav', function ($scope, api, growl) {
+module.exports = function ($scope, api, growl) {
     'use strict';
 
     $scope.reconnectDb = function () {
@@ -8,4 +7,4 @@ angular.module('notes')
             growl.success('reconnecting');
         });
     };
-});
+};

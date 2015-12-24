@@ -2,8 +2,7 @@
 //
 // automatically updates textarea height
 //
-angular.module('notes')
-.directive('elastic', function($timeout) {
+module.exports = function($timeout) {
     'use strict';
 
     return {
@@ -23,4 +22,4 @@ angular.module('notes')
             $timeout(resize, 0);
         }
     };
-});
+};

@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('editNote', function ($scope, $location, post, savedTags, api) {
+module.exports = function ($scope, $location, post, savedTags, api) {
     'use strict';
 
     $scope.form = post || {};
@@ -83,4 +82,4 @@ angular.module('notes')
             return t === tag;
         });
     };
-});
+};

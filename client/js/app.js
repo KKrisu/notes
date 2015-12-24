@@ -1,7 +1,7 @@
 window.pr = window.console.log.bind(window.console);
 angular.module('notesFilters', []);
 angular.module('notes', [
-    'notesFilters', 'ui.bootstrap', 'restangular', 'ngRoute', 'ngProgress',
+    'ui.bootstrap', 'restangular', 'ngRoute', 'ngProgress',
     'angular-growl'
 ])
 
@@ -10,11 +10,11 @@ angular.module('notes', [
 
     $routeProvider.when('/search', {
         templateUrl: '/partials/search.html',
-        controller: 'search'
+        controller: 'Search'
     })
     .when('/posts/new', {
         templateUrl: '/partials/editNote.html',
-        controller: 'editNote',
+        controller: 'EditNote',
         resolve: {
             savedTags: function (api) {
                 return api.all('tags').getList();
@@ -26,11 +26,11 @@ angular.module('notes', [
     })
     .when('/posts/:id', {
         templateUrl: '/partials/noteView.html',
-        controller: 'noteView'
+        controller: 'NoteView'
     })
     .when('/posts/:id/edit', {
         templateUrl: '/partials/editNote.html',
-        controller: 'editNote',
+        controller: 'EditNote',
         resolve: {
             post: function ($route, api) {
                 return api.one('posts', $route.current.params.id).get();
@@ -42,15 +42,15 @@ angular.module('notes', [
     })
     .when('/tags', {
         templateUrl: '/partials/tags.html',
-        controller: 'tags'
+        controller: 'Tags'
     })
     .when('/tags/new', {
         templateUrl: '/partials/editTag.html',
-        controller: 'tag'
+        controller: 'Tag'
     })
     .when('/tags/:id', {
         templateUrl: '/partials/editTag.html',
-        controller: 'tag'
+        controller: 'Tag'
     })
     .otherwise({
         redirectTo: '/search'
@@ -60,4 +60,24 @@ angular.module('notes', [
 .config(function(growlProvider) {
     'use strict';
     growlProvider.globalTimeToLive(3000);
-});
+})
+
+.controller('EditNote', require('./controllers/EditNote'))
+.controller('Nav', require('./controllers/Nav'))
+.controller('NoteView', require('./controllers/NoteView'))
+.controller('Search', require('./controllers/Search'))
+.controller('Tag', require('./controllers/Tag'))
+.controller('Tags', require('./controllers/Tags'))
+
+.directive('elastic', require('./directives/elastic'))
+.directive('focusMe', require('./directives/focusMe'))
+
+.filter('autolinker', require('./filters/autolinker'))
+.filter('markdownToHtml', require('./filters/markdownToHtml'))
+
+.service('api', require('./services/api'))
+.service('commonMethods', require('./services/commonMethods'))
+.service('constants', require('./services/constants'));
+
+// TODO: let's use it
+window.markdownAstParser = require('../node_modules/markdown-to-ast/lib/markdown/markdown-parser.js').parse;

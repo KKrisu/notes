@@ -1,4 +1,4 @@
-angular.module('notes').service('constants', function () {
+module.exports = function () {
     'use strict';
 
     return {
@@ -10,4 +10,4 @@ angular.module('notes').service('constants', function () {
             }
         }
     };
-});
+};

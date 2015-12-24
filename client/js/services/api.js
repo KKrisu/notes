@@ -1,4 +1,4 @@
-angular.module('notes').service('api', function (Restangular, growl) {
+module.exports = function (Restangular, growl) {
     'use strict';
 
     return Restangular.withConfig(function (RestangularConfigurer) {
@@ -9,4 +9,4 @@ angular.module('notes').service('api', function (Restangular, growl) {
             return true; // error not handled
         });
     });
-});
+};

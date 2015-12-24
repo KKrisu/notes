@@ -1,5 +1,4 @@
-angular.module('notesFilters')
-.filter('markdownToHtml', function ($sce) {
+module.exports = function ($sce) {
     'use strict';
 
     var markdown = window.markdown;
@@ -15,4 +14,4 @@ angular.module('notesFilters')
         return $sce.trustAsHtml(output);
 
     };
-});
+};

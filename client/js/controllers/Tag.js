@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('tag', function ($scope, $route, $location, api) {
+module.exports = function ($scope, $route, $location, api) {
     'use strict';
 
     var id = $route.current.params.id;
@@ -24,4 +23,4 @@ angular.module('notes')
         });
     };
 
-});
+};

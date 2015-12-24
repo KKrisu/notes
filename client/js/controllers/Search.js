@@ -1,5 +1,4 @@
-angular.module('notes')
-.controller('search', function (
+module.exports = function (
     $scope, $timeout, api, $location, ngProgress, commonMethods
 ) {
     'use strict';
@@ -79,4 +78,4 @@ angular.module('notes')
         updateSearchResults();
     }, true);
 
-});
+};

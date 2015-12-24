@@ -3,8 +3,7 @@
 // sets focus on element when focusMe attribute value changes to true
 // also automatically sets focusMe attr to false when element is blured
 //
-angular.module('notesFilters')
-.directive('focusMe', function($parse, $timeout) {
+module.exports = function($parse, $timeout) {
     'use strict';
 
     return {
@@ -31,4 +30,4 @@ angular.module('notesFilters')
         }
 
     };
-});
+};
