@@ -63,18 +63,6 @@ module.exports = function(grunt) {
             },
         },
 
-        // Concats the js files into static/ - development
-        concat: {
-            app: {
-                src: files.app.include,
-                dest: files.app.destination,
-            },
-            vendors: {
-                src: files.vendors.include,
-                dest: files.vendors.destination,
-            },
-        },
-
         browserify: {
             app: {
                 src: files.browserify.include,
@@ -133,6 +121,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('common', ['clean', 'copy']);
 
-    // grunt.registerTask('dev', ['common', 'browserify', 'concat', 'recess:concat', 'watch']);
     grunt.registerTask('dev', ['common', 'browserify:app', 'recess:concat', 'watch']);
 };

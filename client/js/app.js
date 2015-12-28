@@ -78,6 +78,3 @@ angular.module('notes', [
 .service('api', require('./services/api'))
 .service('commonMethods', require('./services/commonMethods'))
 .service('constants', require('./services/constants'));
-
-// TODO: let's use it
-window.markdownAstParser = require('../node_modules/markdown-to-ast/lib/markdown/markdown-parser.js').parse;
