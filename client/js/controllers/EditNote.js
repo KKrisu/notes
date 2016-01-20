@@ -1,66 +1,12 @@
-var markdownAstParser = require('../../node_modules/markdown-to-ast/lib/markdown/markdown-parser.js').parse;
-
-module.exports = function ($scope, $location, post, savedTags, api) {
+module.exports = function ($scope, $location, post, savedTags, api, ast) {
     'use strict';
 
     $scope.form = post || {};
 
-    // Picks only useful part of ast items
-    function formatAstChildren(children) {
-        return children.map(function(item) {
-            var formatted = {
-                type: item.type,
-                depth: item.depth,
-                raw: item.raw,
-            };
-
-            if (item.children) {
-                formatted.children = formatAstChildren(item.children);
-            }
-
-            return formatted;
-        });
-    }
-
-    function organizeByHeaders(items) {
-        var currentHeaderDepth = 0;
-        var currentItem;
-        var formatted = [];
-        items.forEach(function(item) {
-
-            // pushing directly items before first Header
-            if (currentHeaderDepth === 0 && item.type !== 'Header' && !currentItem) {
-                formatted.push(item);
-                return;
-            }
-
-            if (item.type === 'Header' && (currentHeaderDepth === 0 || item.depth <= currentHeaderDepth)) {
-                currentHeaderDepth = item.depth;
-                formatted.push(item);
-                currentItem = item;
-            } else {
-                if (!currentItem.subitems) {
-                    currentItem.subitems = [];
-                }
-                currentItem.subitems.push(item);
-            }
-        });
-
-        formatted.forEach(function(item) {
-            if (item.subitems) {
-                item.subitems = organizeByHeaders(item.subitems);
-            }
-        });
-
-        return formatted;
-    }
-
     $scope.$watch('form.body', function(newBody) {
-        var ast = markdownAstParser(newBody);
-        var formatted = formatAstChildren(ast.children);
-        formatted = organizeByHeaders(formatted);
-
-        $scope.formattedAst = JSON.stringify(formatted, null, 2);
+        $scope.formattedAst = JSON.stringify(
+            ast.getAst(newBody), null, 2
+        );
     });
 
     $scope.contentUpdated = function () {

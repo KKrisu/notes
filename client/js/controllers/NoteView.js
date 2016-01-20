@@ -1,5 +1,5 @@
 module.exports = function (
-    $scope, $route, api, constants, commonMethods
+    $scope, $route, api, constants, commonMethods, ast
 ) {
     'use strict';
 
@@ -9,6 +9,9 @@ module.exports = function (
 
     api.one('posts', id).get().then(function (data) {
         $scope.note = data;
+        $scope.formattedAst = JSON.stringify(
+            ast.getAst(data.body), null, 2
+        );
     }, function (err) {
         console.error('fetching single post failure', err);
     });
