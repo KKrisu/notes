@@ -76,5 +76,6 @@ angular.module('notes', [
 .filter('markdownToHtml', require('./filters/markdownToHtml'))
 
 .service('api', require('./services/api'))
+.service('ast', require('./services/ast'))
 .service('commonMethods', require('./services/commonMethods'))
 .service('constants', require('./services/constants'));
