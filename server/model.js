@@ -1,38 +1,43 @@
 'use strict';
 
-var dbConfig = global.config.db;
 var mysql = require('mysql');
-var dbConnection;
 var Q = require('q');
 var _ = require('lodash');
+var bcrypt = require('bcrypt');
+var salt = bcrypt.genSaltSync(10);
+var fs = require('fs');
+var path = require('path');
 
-var reconnectWithDb = function () {
-    dbConnection = mysql.createConnection(dbConfig);
+var configFile = 'app' + (process.env.NODE_ENV === 'production' ? '.prod' : '') + '.json';
+var dbConfig = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '../config/' + configFile), 'utf8')
+).db;
 
-    dbConnection.connect(function (err) {
-        if (err) {
-            console.error('error connecting wity mysql: ' + err);
-            setTimeout(reconnectWithDb, 2000);
-            return;
-        }
+var model = module.exports = {
+    connection: null,
 
-        console.log('connected with mysql as id ' + dbConnection.threadId);
-    });
+    reconnect: function () {
+        model.connection = mysql.createConnection(dbConfig);
 
-    dbConnection.on('error', function (err) {
-        console.log('db connection error', err);
-        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-            reconnectWithDb();
-        } else {
-            throw err;
-        }
-    });
-};
+        model.connection.connect(function (err) {
+            if (err) {
+                console.error('error connecting wity mysql: ' + err);
+                setTimeout(model.reconnect, 2000);
+                return;
+            }
 
-reconnectWithDb();
+            console.log('connected with mysql as id ' + model.connection.threadId);
+        });
 
-module.exports = {
-    reconnectDb: reconnectWithDb,
+        model.connection.on('error', function (err) {
+            console.log('db connection error', err);
+            if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+                model.reconnect();
+            } else {
+                throw err;
+            }
+        });
+    },
 
     getPosts: function (params) {
         // pr(params);
@@ -69,7 +74,7 @@ module.exports = {
 
             query += ' ORDER BY post.important DESC';
 
-            var q = dbConnection.query(query, preparedStatment,
+            var q = model.connection.query(query, preparedStatment,
             function(err, rows) {
                 if(err) {
                     console.error(err);
@@ -148,7 +153,7 @@ module.exports = {
         var defer = Q.defer();
         var query = 'SELECT * FROM posts WHERE id = ? LIMIT 1';
 
-        dbConnection.query(query, [data.id],
+        model.connection.query(query, [data.id],
             function(err, rows) {
                 if(err) {
                     console.error(err);
@@ -185,7 +190,7 @@ module.exports = {
                     'JOIN posts_tags AS p_t ON tag.id = p_t.tag_id ' +
                     'WHERE p_t.post_id = ?';
 
-        dbConnection.query(query, [data.post_id],
+        model.connection.query(query, [data.post_id],
             function(err, rows) {
                 if(err) {
                     console.error(err);
@@ -218,7 +223,7 @@ module.exports = {
 
         preparedStatment.push(id);
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err.message));
@@ -252,7 +257,7 @@ module.exports = {
             preparedStatment = [data.title, data.body, data.status, data.id];
         }
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err.message));
@@ -323,7 +328,7 @@ module.exports = {
                 '(post_id, tag_id) VALUES (?, ?)';
         var preparedStatment = [postId, tagId];
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err.message));
@@ -342,7 +347,7 @@ module.exports = {
                 'WHERE post_id = ? AND tag_id = ?';
         var preparedStatment = [postId, tagId];
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err.message));
@@ -365,7 +370,7 @@ module.exports = {
             preparedStatment.push(filter.replace(/[ ]+/g, '|'));
         }
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err));
@@ -381,7 +386,7 @@ module.exports = {
         var defer = Q.defer();
         var query = 'SELECT * FROM tags WHERE id = ? LIMIT 1';
 
-        dbConnection.query(query, [data.id],
+        model.connection.query(query, [data.id],
             function(err, rows) {
                 if(err) {
                     console.error(err);
@@ -419,7 +424,7 @@ module.exports = {
             preparedStatment = [data.name, data.id];
         }
 
-        dbConnection.query(query, preparedStatment, function(err, rows) {
+        model.connection.query(query, preparedStatment, function(err, rows) {
             if(err) {
                 console.error(err);
                 defer.reject(new Error(err));
@@ -432,5 +437,66 @@ module.exports = {
         });
 
         return defer.promise;
-    }
+    },
+
+    checkUserCredentials: function(email, password) {
+        var defer = Q.defer();
+
+        model.connection.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows) {
+            if (err) {
+                defer.reject(new Error(err));
+                return;
+            }
+            if (!rows.length) {
+                defer.reject('No user found for defined email.');
+                return;
+            }
+            console.log(password, rows[0].password);
+
+            // if the user is found but the password is wrong
+            if (!bcrypt.compareSync(password, rows[0].password)) {
+                defer.reject('Oops! Wrong password.');
+                return;
+            }
+
+            // all is well, return successful user
+            defer.resolve(rows[0]);
+        });
+
+        return defer.promise;
+    },
+
+    saveUser: function(email, password) {
+        var defer = Q.defer();
+        var query = 'INSERT INTO users ' +
+                    '(email, password) VALUES (?, ?)';
+
+        model.connection.query(query, [email, bcrypt.hashSync(password, salt)], function(err, result) {
+            if (err) {
+                defer.reject(new Error(err));
+            } else {
+                defer.resolve(result);
+            }
+        });
+
+        return defer.promise;
+    },
+
+    getUserById: function(userId) {
+        var defer = Q.defer();
+
+        model.connection.query('SELECT * FROM users WHERE id = ?', [userId], function(err, rows) {
+            if (err) {
+                defer.reject(new Error(err));
+                return;
+            }
+            if (!rows.length) {
+                defer.reject('No user found.');
+                return;
+            }
+            defer.resolve(rows[0]);
+        });
+
+        return defer.promise;
+    },
 };

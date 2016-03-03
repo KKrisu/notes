@@ -6,8 +6,7 @@
         "password": "password",
         "database": "database"
     },
-    "basicAuth": {
-        "user": "user",
-        "password": "password"
+    "session": {
+        "secret": "alamakota"
     }
 }

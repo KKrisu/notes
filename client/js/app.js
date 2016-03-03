@@ -62,6 +62,10 @@ angular.module('notes', [
     growlProvider.globalTimeToLive(3000);
 })
 
+.run(function($rootScope, USER) {
+    $rootScope.loggedUser = USER;
+})
+
 .controller('EditNote', require('./controllers/EditNote'))
 .controller('Nav', require('./controllers/Nav'))
 .controller('NoteView', require('./controllers/NoteView'))

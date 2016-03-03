@@ -9,18 +9,101 @@ var config = JSON.parse(fs.readFileSync('./config/' + configFile, 'utf8'));
 global.config = config;
 
 var express = require('express');
-var basicAuth = require('basic-auth-connect');
+var session  = require('express-session');
+var flash = require('connect-flash');
 var app = express();
-var model = require('./server/db');
+var model = require('./server/model');
+model.reconnect();
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var ejs = require('ejs');
+var ejsLocals = require('ejs-locals');
 
+// pass passport and model for configuration
+require('./config/passport')(passport, model);
+
+app.set('view engine', 'ejs');
+app.engine('ejs', ejsLocals);
 app.use('/static', express.static('./client/app/static'));
 app.use('/partials', express.static('./client/partials'));
-app.use(basicAuth(config.basicAuth.user, config.basicAuth.password));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+    secret: config.session.secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        // it is overridden in session config in /login request
+        maxAge: 1000 * 60 * 60 * 3, // 3h
+    },
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+app.use(function (req, res, next) {
+
+    // adding logged in user data to session
+    if (req.session.passport && req.session.passport.user) {
+        res.locals.user = req.session.passport.user;
+    }
+
+    // flashes with redirecting handling
+    if(req.session.flash && Object.keys(req.session.flash).length > -1) {
+        res.locals.flashMessages = req.flash();
+    } else {
+        res.locals.flashMessages = null;
+    }
+
+    next();
+});
+
+passport.serializeUser(function(user, cb) {
+    cb(null, {id: user.id, email: user.email});
+});
+
+passport.deserializeUser(function(user, cb) {
+    model.getUserById(user.id).then(function (user) {
+        cb(null, user);
+    }, function(err) {
+        return cb(err);
+    });
+});
+
+
+// ### ROUTES ###
+
+app.get('/login', function(req, res) {
+    res.render(path.join(__dirname, './client/login.ejs'));
+});
+
+app.get('/logout', function (req, res) {
+    req.logout();
+    req.session.destroy(function (err) {
+        res.redirect('/');
+    });
+});
+
+// process the login form
+app.post('/login', passport.authenticate('password-login', {
+        failureRedirect : '/login',
+        failureFlash : true
+    }),
+    function(req, res) {
+        if (req.body.remember) {
+            req.session.cookie.expires = false;
+        } else {
+            req.session.cookie.maxAge = 1000 * 60 * 60 * 3; // 3h
+        }
+    res.redirect('/');
+});
 
 app.get('/', function(req, res) {
-    res.sendfile(path.join(__dirname, './client/index.html'));
+    if(req.isAuthenticated()) {
+        res.render(path.join(__dirname, './client/index.ejs'));
+    } else {
+        res.redirect('/login');
+    }
 });
 
 // search
@@ -97,7 +180,7 @@ app.post('/api/v1/tags', function(req, res) {
 
 app.post('/api/v1/commands', function (req, res) {
     if(req.body.command === 'reconnect_db') {
-        model.reconnectDb();
+        model.reconnect();
     }
     res.send({result: true});
 });
