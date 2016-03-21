@@ -1,6 +1,6 @@
 module.exports = {
-    handleFlashes: function(req, res, next) {
 
+    handleFlashes: function(req, res, next) {
         // flashes with redirecting handling
         if(req.session.flash && Object.keys(req.session.flash).length > -1) {
             res.locals.flashMessages = req.flash();
@@ -26,5 +26,5 @@ module.exports = {
         }
 
         return res.send(403);
-    }
+    },
 };

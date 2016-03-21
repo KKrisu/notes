@@ -1,5 +1,8 @@
-module.exports = function ($scope, $location, post, savedTags, api, ast) {
+module.exports = function (
+    $scope, $location, post, savedTags, api, ast, beforeUnload
+) {
     'use strict';
+
 
     $scope.form = post || {};
 
@@ -10,7 +13,7 @@ module.exports = function ($scope, $location, post, savedTags, api, ast) {
     });
 
     $scope.contentUpdated = function () {
-        // TODO: pre-save every minute or something
+        beforeUnload.activate();
     };
 
     $scope.saveEntry = function () {
@@ -33,6 +36,7 @@ module.exports = function ($scope, $location, post, savedTags, api, ast) {
         pr('to save:', $scope.form);
 
         api.all('posts').post($scope.form).then(function(result) {
+            beforeUnload.deactivate();
             $location.path('/posts/' + result.id);
         }, function () {
             pr('saving error', arguments);
@@ -88,4 +92,8 @@ module.exports = function ($scope, $location, post, savedTags, api, ast) {
             return t === tag;
         });
     };
+
+    $scope.$on('$destroy', function() {
+        beforeUnload.deactivate();
+    });
 };

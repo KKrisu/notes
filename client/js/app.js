@@ -81,5 +81,6 @@ angular.module('notes', [
 
 .service('api', require('./services/api'))
 .service('ast', require('./services/ast'))
+.service('beforeUnload', require('./services/beforeUnload'))
 .service('commonMethods', require('./services/commonMethods'))
 .service('constants', require('./services/constants'));
