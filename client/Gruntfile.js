@@ -66,7 +66,8 @@ module.exports = function(grunt) {
         browserify: {
             app: {
                 src: files.browserify.include,
-                dest: files.browserify.destination
+                dest: files.browserify.destination,
+                transform: [['babelify', {presets: ['es2015'] }]]
             }
         },
 

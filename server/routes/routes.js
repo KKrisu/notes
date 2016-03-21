@@ -6,7 +6,7 @@ module.exports = (function() {
     var router = require('express').Router();
 
     router.get('/', function(req, res) {
-        if(req.isAuthenticated()) {
+        if(req.isAuthenticated() || !config.session.loginRequired) {
             res.render(path.join(appRoot, './client/index.ejs'));
         } else {
             res.redirect('/login');
