@@ -45,6 +45,9 @@
                             <span class="glyphicon glyphicon-refresh"></span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/logout">{{ loggedUser.email }} Logout</a>
+                    </li>
                 </ul>
             </div>
 
@@ -55,5 +58,10 @@
 
         </div>
 
+        <script>
+            angular.module('notes').value('USER',
+                <%- JSON.stringify(user) %>
+            );
+        </script>
     </body>
 </html>

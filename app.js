@@ -1,106 +1,58 @@
 'use strict';
 
-global.pr = console.log.bind(console);
 var path = require('path');
 var fs = require('fs');
+
+var express = require('express');
+var session  = require('express-session');
+var flash = require('connect-flash');
+var app = express();
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var ejs = require('ejs');
+var ejsLocals = require('ejs-locals');
+
+var model = require('./server/model');
 var configFile = 'app' +
     (process.env.NODE_ENV === 'production' ? '.prod' : '') + '.json';
 var config = JSON.parse(fs.readFileSync('./config/' + configFile, 'utf8'));
+
+// for fast debugging
+global.pr = console.log.bind(console);
+// config available globally
 global.config = config;
+// for constructing paths depended on project root
+global.appRoot = path.resolve(__dirname);
 
-var express = require('express');
-var basicAuth = require('basic-auth-connect');
-var app = express();
-var model = require('./server/db');
-var bodyParser = require('body-parser');
+model.reconnect();
 
+// pass passport and model for passport strategy configuration
+require('./config/passport')(passport, model);
+app.set('view engine', 'ejs');
+app.engine('ejs', ejsLocals);
 app.use('/static', express.static('./client/app/static'));
 app.use('/partials', express.static('./client/partials'));
-app.use(basicAuth(config.basicAuth.user, config.basicAuth.password));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+    secret: config.session.secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        // it is overridden in session config in /login request
+        maxAge: 1000 * 60 * 60 * 3, // 3h
+    },
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-app.get('/', function(req, res) {
-    res.sendfile(path.join(__dirname, './client/index.html'));
-});
+app.use(require('./server/middlewares').handleUserSession);
+app.use(require('./server/middlewares').handleFlashes);
 
-// search
-app.get('/api/v1/posts', function(req, res) {
-    model.getPosts(req.query).then(function (result) {
-        res.type('application/json');
-        res.send(result);
-    });
-});
-
-// fetching single post
-app.get('/api/v1/posts/:id', function(req, res) {
-    model.getSinglePost(req.params).then(function (result) {
-        res.type('application/json');
-        res.send(result);
-    }, function (err) {
-        if(err.message === 'no results') {
-            res.send(404, 'There is no entry with specified value');
-        } else {
-            res.send(500);
-        }
-    });
-});
-
-app.post('/api/v1/posts', function (req, res) {
-    model.savePost(req.body).then(function (id) {
-        res.send({id: id});
-    }, function (err) {
-        console.error('Saving post fail.');
-        res.send(500, err.message);
-    });
-});
-
-app.patch('/api/v1/posts/:id', function (req, res) {
-    model.patchPost(req.params.id, req.body).then(function () {
-        res.send();
-    }, function (err) {
-        console.error('Pathing post fail.');
-        res.send(500, err.message);
-    });
-});
-
-app.get('/api/v1/tags', function (req, res) {
-    model.getTags().then(function (result) {
-        res.type('application/json');
-        res.send(result);
-    }, function(err) {
-        res.send(500);
-    });
-});
-
-app.get('/api/v1/tags/:id', function (req, res) {
-    model.getSingleTag(req.params).then(function (result) {
-        res.type('application/json');
-        res.send(result);
-    }, function (err) {
-        if(err.message === 'no results') {
-            res.send(404, 'There is no entry with specified value');
-        } else {
-            res.send(500);
-        }
-    });
-});
-
-app.post('/api/v1/tags', function(req, res) {
-    model.saveTag(req.body).then(function(id) {
-        res.type('application/json');
-        res.send({id: id});
-    }, function (err) {
-        console.error('Saving new tag fail.');
-        res.send(500, err.message);
-    });
-});
-
-app.post('/api/v1/commands', function (req, res) {
-    if(req.body.command === 'reconnect_db') {
-        model.reconnectDb();
-    }
-    res.send({result: true});
-});
+// # ROUTES #
+app.use('/', require('./server/routes/routes'));
+app.use('/api/v1/', require('./server/routes/api'));
 
 app.listen(config.port);
 console.info('Server has started listening on port', config.port);

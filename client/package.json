@@ -22,6 +22,7 @@
   "jshintConfig": {
     "indent": 4,
     "node": true,
+    "esversion": 6,
     "globals": {
       "angular": false,
       "$": false,
@@ -30,6 +31,7 @@
     }
   },
   "devDependencies": {
+    "babelify": "7.2.0",
     "browserify": "12.0.1",
     "browserify-shim": "3.8.11",
     "grunt-browserify": "4.0.1"
