@@ -21,7 +21,10 @@ Open: **http://localhost:9000**
 ### deploy: ###
 * `/client/app`
 * `/client/partials`
-* `/client/index.html`
+* `/client/index.ejs`
+* `/client/login.ejs`
 * `/server`
 * `/config`
+* `/scripts`
 * `app.js`
+* `package.json`
