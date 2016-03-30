@@ -24,7 +24,8 @@ Open: **http://localhost:9000**
 * `/client/index.ejs`
 * `/client/login.ejs`
 * `/server`
-* `/config`
+* `/config/app.prod.json`
+* `/config/passport.js`
 * `/scripts`
 * `app.js`
 * `package.json`
