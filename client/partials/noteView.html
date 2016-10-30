@@ -1,28 +1,28 @@
 <section class="note-view">
     <h2>
-        {{ note.title }}
-        [<a href="#/posts/{{ note.id }}/edit">edit</a>]
+        {{ $ctrl.note.title }}
+        [<a href="#/posts/{{ $ctrl.note.id }}/edit">edit</a>]
     </h2>
     <div class="importance">
-        importance: <strong>{{ note.important }}</strong>
-        <a ng-click="updateImportance(note.important + 1)">
+        importance: <strong>{{ $ctrl.note.important }}</strong>
+        <a ng-click="$ctrl.updateImportance($ctrl.note.important + 1)">
             <span class="glyphicon glyphicon-arrow-up"></span>
         </a>
-        <a ng-click="updateImportance(note.important -1)">
+        <a ng-click="$ctrl.updateImportance($ctrl.note.important -1)">
             <span class="glyphicon glyphicon-arrow-down"></span>
         </a>
     </div>
-    <small>created: {{ note.created }}</small>
-    <small>updated: {{ note.updated }}</small>
-    <div class="preview markdown" ng-bind-html="note.body | markdownToHtml | autolinker"></div>
+    <small>created: {{ $ctrl.note.created }}</small>
+    <small>updated: {{ $ctrl.note.updated }}</small>
+    <div class="preview markdown" ng-bind-html="$ctrl.note.body | markdownToHtml | autolinker"></div>
     <div>
         <span class="glyphicon glyphicon-tags"></span>&nbsp;
-        <span ng-repeat="tag in note.tags">
+        <span ng-repeat="tag in $ctrl.note.tags">
             <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
         </span>
         <span>
-            <small>status:</small> {{ constants.notes.statuses[note.status] }}
+            <small>status:</small> {{ $ctrl.constants.notes.statuses[$ctrl.note.status] }}
         </span>
     </div>
 </section>
-<ng-include src="'/partials/astPreview.html'"></ng-include>
+<ast-tree-preview data="$ctrl.note.body"></ast-tree-preview>
