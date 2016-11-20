@@ -1,0 +1,39 @@
+<form (click)="refetch()">
+
+    <md-input placeholder="Search"
+        [formControl]="searchControl"
+        (keyup.escape)="resultsOpen = false">
+    </md-input>
+
+
+    <button md-icon-button [md-menu-trigger-for]="searchDetails" class="search-details-button">
+        <md-icon>more_vert</md-icon>
+    </button>
+
+    <md-menu #searchDetails="mdMenu">
+        <select md-menu-item (change)="searchByChanged($event)"
+            name="searchBy"
+            [(ngModel)]="searchBy">
+            <option value="any">title/body/tag</option>
+            <option value="tag">tag</option>
+            <option value="status">status</option>
+        </select>
+        <a md-menu-item (click)="searchByStatus(8)">deleted</a>
+        <a md-menu-item (click)="searchByStatus(0)">drafts</a>
+    </md-menu>
+</form>
+
+<md-card class="search-items" *ngIf="resultsOpen">
+    <div *ngFor="let note of notes | async">
+        <md-card-title>
+            <a [routerLink]="['/note', note.id]"
+            (click)="resultsOpen = false">
+                {{ note.title }}
+            </a>
+        </md-card-title>
+        <md-card-content
+            class="item-body"
+            [innerHTML]="note.body.substring(0, 40) | markdown">
+        </md-card-content>
+    </div>
+</md-card>

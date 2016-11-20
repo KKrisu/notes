@@ -7,14 +7,14 @@ module.exports = (function() {
 
     router.get('/', function(req, res) {
         if(req.isAuthenticated() || !config.session.loginRequired) {
-            res.render(path.join(appRoot, './client/index.ejs'));
+            res.render(path.join(appRoot, './client_new/dist/index.html'));
         } else {
             res.redirect('/login');
         }
     });
 
     router.get('/login', function(req, res) {
-        res.render(path.join(appRoot, './client/login.ejs'));
+        res.render(path.join(appRoot, './client_new/dist/assets/login.ejs'));
     });
 
     // process the login form

@@ -1,0 +1,17 @@
+<span *ngIf="mode === 'view'">
+    {{ tag.name }}
+    <md-icon style="font-size: 14px;" (click)="mode = 'edit'">edit</md-icon>
+</span>
+<form *ngIf="mode === 'edit'" (ngSubmit)="onSubmit()">
+    <md-input [(ngModel)]="tag.name" name="name"></md-input>
+    <button type="submit"
+        md-mini-fab
+        [hidden]="working">
+        <md-icon>save</md-icon>
+    </button>
+    <md-progress-circle
+        mode="indeterminate"
+        *ngIf="working"
+        style="inline-block; width: 40px; height: 40px;">
+    </md-progress-circle>
+</form>
