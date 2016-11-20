@@ -6,19 +6,28 @@
 Create app.json config file in /config based on example file.
 
 ```
-$ cd client && npm install && bower install
+$ cd client_new && npm install
 ```
 
-### run app: ###
-
+### dev ###
 ```
+$ set /config/app.json - loginRequired: false
 $ nodemon app.js
-$ cd client && grunt dev
+$ npm run frontend_dev // runs ng serve with proxy to api
+```
+Open **http://localhost:4200**
+
+### build ###
+
+```
+$ set /config/app.json - loginRequired: true
+$ nodemon app.js
+$ cd client_new && ng build --prod
 ```
 
 Open: **http://localhost:9000**
 
-### deploy: ###
+###### [deprecated] deploy: #######
 * `/client/app`
 * `/client/partials`
 * `/client/index.ejs`

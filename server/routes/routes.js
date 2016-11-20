@@ -5,13 +5,6 @@ module.exports = (function() {
     'use strict';
     var router = require('express').Router();
 
-    router.get('/', function(req, res) {
-        if(req.isAuthenticated() || !config.session.loginRequired) {
-            res.render(path.join(appRoot, './client_new/dist/index.html'));
-        } else {
-            res.redirect('/login');
-        }
-    });
 
     router.get('/login', function(req, res) {
         res.render(path.join(appRoot, './client_new/dist/assets/login.ejs'));
@@ -36,6 +29,14 @@ module.exports = (function() {
         req.session.destroy(function (err) {
             res.redirect('/');
         });
+    });
+
+    router.get(/^[^.]+$/, function(req, res) {
+        if(req.isAuthenticated() || !config.session.loginRequired) {
+            res.render(path.join(appRoot, './client_new/dist/index.html'));
+        } else {
+            res.redirect('/login');
+        }
     });
 
     return router;

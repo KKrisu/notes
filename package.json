@@ -1,7 +1,8 @@
 {
   "version": "0.0.1-1",
   "scripts": {
-    "start": "server.js"
+    "start": "app.js",
+    "frontend_dev": "cd client_new && ng serve --proxy-config proxy.conf.json"
   },
   "engines": {
     "node": "0.10.x"
@@ -9,9 +10,9 @@
   "name": "notes",
   "subdomain": "my-notes",
   "description": "memory notes",
-  "main": "server.js",
+  "main": "app.js",
   "author": "Krzysztof Kesy @kriskodzi",
-  "license": "BSD-2-Clause",
+  "license": "DWTFYW",
   "dependencies": {
     "basic-auth-connect": "~1.0.0",
     "bcrypt": "0.8.5",

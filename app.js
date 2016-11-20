@@ -50,8 +50,8 @@ app.use(require('./server/middlewares').handleUserSession);
 app.use(require('./server/middlewares').handleFlashes);
 
 // # ROUTES #
-app.use('/', require('./server/routes/routes'));
 app.use('/api/v1/', require('./server/routes/api'));
+app.use('/', require('./server/routes/routes'));
 
 // # Statics #
 app.use(express.static('./client_new/dist'));
