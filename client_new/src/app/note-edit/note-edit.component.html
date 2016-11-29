@@ -13,15 +13,22 @@
             </div>
 
             <md-card-content>
-                <div>
-                    <md-textarea [(ngModel)]="note.body"
-                        name="body"
-                        class="textarea-body"
-                        placeholder="Body"
-                        autosize
-                        required>
-                    </md-textarea>
-                </div>
+                <md-tab-group>
+                    <md-tab label="Edit">
+                        <div ace-editor
+                            class="ace-editor"
+                            [text]="editorText"
+                            [mode]="'markdown'"
+                            [theme]="'eclipse'"
+                            [autoUpdateContent]="true"
+                            [options]="{$blockScrolling: Infinity}"
+                            (textChanged)="onChange($event)">
+                        </div>
+                    </md-tab>
+                    <md-tab label="Preview">
+                        <div *ngIf="note.body" [innerHTML]="note.body | markdown"></div>
+                    </md-tab>
+                </md-tab-group>
             </md-card-content>
 
             <div>

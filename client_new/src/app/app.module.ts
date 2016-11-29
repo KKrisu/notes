@@ -21,6 +21,13 @@ import { TagComponent } from './tag/tag.component';
 import { SearchComponent } from './search/search.component';
 import { AstTreeComponent } from './ast-tree/ast-tree.component';
 
+import { AceEditorDirective } from 'ng2-ace-editor';
+
+// Modules for ACE editor based on
+// https://github.com/thlorenz/brace#can-i-use-it-with-typescript
+import "brace/mode/markdown";
+import "brace/theme/eclipse";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -32,6 +39,7 @@ import { AstTreeComponent } from './ast-tree/ast-tree.component';
         SearchComponent,
         AstTreeComponent,
         MarkdownPipe,
+        AceEditorDirective,
     ],
     entryComponents: [
         SaveNoteChangesDialogComponent,

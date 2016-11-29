@@ -19,8 +19,9 @@ export class NoteEditComponent implements OnInit {
     private currentId: any;
     private note: Note;
     private tags: Tag[];
-    private selectedTags = new Set();
+    private selectedTags: Set<number> = new Set();
     private statuses = (new Statuses()).note;
+    private editorText: string = '';
     @ViewChild('noteForm') private noteForm: NgForm;
 
     get statusesKeys():number[] {
@@ -39,10 +40,14 @@ export class NoteEditComponent implements OnInit {
         let getNotePromise: Promise<Note>;
         let getTagsPromise: Promise<Tag[]>;
 
-        this.saveChangesGuard.deactivate();
 
-        this.route.params.forEach((params: Params) => {
+        getTagsPromise = this.apiService.getItem('tags');
+
+        this.route.params.subscribe((params: Params) => {
+            this.saveChangesGuard.deactivate();
             this.currentId = params['id'];
+            this.editorText = '';
+            this.selectedTags.clear();
 
             if (this.currentId === 'new') {
                 getNotePromise = Promise.resolve(new Note(''));
@@ -50,22 +55,20 @@ export class NoteEditComponent implements OnInit {
                 this.currentId = parseInt(params['id'], 10);
                 getNotePromise = this.apiService.getItem('posts', this.currentId);
             }
-        });
 
-        getTagsPromise = this.apiService.getItem('tags');
-
-        Promise.all([getNotePromise, getTagsPromise]).then(([note, tags]) => {
-            this.note = note;
-            this.tags = tags;
-            this.note.tags.forEach(tag => this.selectedTags.add(tag.tag_id));
-
-            // we can access form after timeout, because it's under *ngIf
-            setTimeout(() => {
-                this.noteForm.valueChanges.subscribe((formValues) => {
-                    this.saveChangesGuard.activate();
-                });
+            Promise.all([getNotePromise, getTagsPromise]).then(([note, tags]) => {
+                this.note = note;
+                this.editorText = this.note.body;
+                this.tags = tags;
+                this.note.tags.forEach(tag => this.selectedTags.add(tag.tag_id));
             });
         });
+
+    }
+
+    onChange(body: string) {
+        this.note.body = body;
+        this.saveChangesGuard.activate();
     }
 
     tagChecked(event: any, tagId: number) {
