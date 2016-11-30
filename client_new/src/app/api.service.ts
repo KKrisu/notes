@@ -72,8 +72,7 @@ export class ApiService {
         });
     }
 
-    // TODO: adjust to notes app API
-    searchNotes(endpoint: string, term: string): Observable<any[]> {
+    searchNotes(endpoint: string, term: string): Observable<Note[]> {
         const url = `${endpoint}?${term}`;
         return this
             .get(url)

@@ -82,15 +82,11 @@ export class SearchComponent implements OnInit {
         }
     }
 
-    // // updates important field of note
-    // $scope.updateImportance = function (noteId, importantValue) {
-    //     commonMethods.updateImportance(noteId, importantValue).then(function () {
-    //         _.find($scope.results, function(item) {
-    //             return item.id === noteId;
-    //         }).important = importantValue;
-    //         updateSearchResults();
-    //     }, function (err) {
-    //         console.error('updating important field failure', err);
-    //     });
-    // };
+    updateImportance(noteId: number, newValue: number): void {
+        this.api
+            .updateImportance(noteId, newValue)
+            .then(() => {
+                this.refetch();
+            });
+    }
 }

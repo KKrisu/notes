@@ -11,6 +11,7 @@ import { AstService } from './ast.service';
 import { routing } from './app.routing';
 
 import { MarkdownPipe } from './markdown.pipe';
+import { SnapPipe } from './snap.pipe';
 
 import { AppComponent } from './app.component';
 import { NoteViewComponent } from './note-view/note-view.component';
@@ -39,6 +40,7 @@ import "brace/theme/eclipse";
         SearchComponent,
         AstTreeComponent,
         MarkdownPipe,
+        SnapPipe,
         AceEditorDirective,
     ],
     entryComponents: [
