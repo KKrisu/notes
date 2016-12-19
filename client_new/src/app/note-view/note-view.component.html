@@ -1,0 +1,35 @@
+<section class="note-view" *ngIf="note">
+    <md-card>
+        <md-card-subtitle class="importance">
+            importance: <strong>{{ note.important }}</strong>
+            <a (click)="updateImportance(note.important + 1)">
+                <md-icon>arrow_upward</md-icon>
+            </a>
+            <a (click)="updateImportance(note.important -1)">
+                <md-icon>arrow_downward</md-icon>
+            </a>
+        </md-card-subtitle>
+        <md-card-subtitle>
+            created: {{ note.created | date }}
+            updated: {{ note.updated | date }}
+        </md-card-subtitle>
+        <md-card-title>
+            {{ note.title }}
+            [<a [routerLink]="['/note', note.id, 'edit']">edit</a>]
+        </md-card-title>
+    </md-card>
+    <md-card>
+        <md-card-content *ngIf="note.body" [innerHTML]="note.body | markdown"></md-card-content>
+        <md-card-actions>
+            tags:
+            <span *ngFor="let tag of note.tags">
+                <a href="#/search?tag={{ tag.name }}" >{{ tag.name }}</a>
+            </span>
+            <span>
+                <small>status:</small> {{ statuses.note[note.status] }}
+            </span>
+        </md-card-actions>
+    </md-card>
+</section>
+
+<ast-tree [markdown]="note && note.body || ''"></ast-tree>

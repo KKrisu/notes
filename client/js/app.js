@@ -13,44 +13,46 @@ angular.module('notes', [
         controller: 'Search'
     })
     .when('/posts/new', {
-        templateUrl: '/partials/editNote.html',
-        controller: 'EditNote',
+        template: '<note-edit note="$resolve.note", available-tags="$resolve.tags"></note-edit>',
         resolve: {
-            savedTags: function (api) {
-                return api.all('tags').getList();
-            },
-            post: function () {
+            note: function () {
                 return {};
+            },
+            tags: function (api) {
+                return api.all('tags').getList();
             }
-        }
+        },
     })
     .when('/posts/:id', {
-        templateUrl: '/partials/noteView.html',
-        controller: 'NoteView'
+        template: '<note-view note="$resolve.note"></note-view>',
+        resolve: {
+            note: ($route, api) => api.one('posts', $route.current.params.id).get()
+        },
     })
     .when('/posts/:id/edit', {
-        templateUrl: '/partials/editNote.html',
-        controller: 'EditNote',
+        template: '<note-edit note="$resolve.note" available-tags="$resolve.tags"></note-edit>',
         resolve: {
-            post: function ($route, api) {
+            note: function ($route, api) {
                 return api.one('posts', $route.current.params.id).get();
             },
-            savedTags: function (api) {
+            tags: function (api) {
                 return api.all('tags').getList();
-            }
-        }
+            },
+        },
     })
     .when('/tags', {
-        templateUrl: '/partials/tags.html',
-        controller: 'Tags'
+        template: '<tags tags="$resolve.tags"></tags>',
+        resolve: {
+            tags: function (api) {
+                return api.all('tags').getList();
+            },
+        },
     })
     .when('/tags/new', {
-        templateUrl: '/partials/editTag.html',
-        controller: 'Tag'
+        template: '<tag-edit></tag-edit>',
     })
     .when('/tags/:id', {
-        templateUrl: '/partials/editTag.html',
-        controller: 'Tag'
+        template: '<tag-edit></tag-edit>',
     })
     .otherwise({
         redirectTo: '/search'
@@ -66,12 +68,14 @@ angular.module('notes', [
     $rootScope.loggedUser = USER;
 })
 
-.controller('EditNote', require('./controllers/EditNote'))
+.component('noteView', require('./components/note-view'))
+.component('astTreePreview', require('./components/ast-tree-preview'))
+.component('noteEdit', require('./components/note-edit'))
+.component('tags', require('./components/tags'))
+.component('tagEdit', require('./components/tag-edit'))
+
 .controller('Nav', require('./controllers/Nav'))
-.controller('NoteView', require('./controllers/NoteView'))
 .controller('Search', require('./controllers/Search'))
-.controller('Tag', require('./controllers/Tag'))
-.controller('Tags', require('./controllers/Tags'))
 
 .directive('elastic', require('./directives/elastic'))
 .directive('focusMe', require('./directives/focusMe'))

@@ -1,0 +1,52 @@
+<form (click)="refetch()">
+
+    <md-input placeholder="Search"
+        [formControl]="searchControl"
+        (keyup.escape)="resultsOpen = false">
+    </md-input>
+
+
+    <button md-icon-button [md-menu-trigger-for]="searchDetails" class="search-details-button">
+        <md-icon>more_vert</md-icon>
+    </button>
+
+    <md-menu #searchDetails="mdMenu">
+        <select md-menu-item (change)="searchByChanged($event)"
+            name="searchBy"
+            [(ngModel)]="searchBy">
+            <option value="any">title/body/tag</option>
+            <option value="tag">tag</option>
+            <option value="status">status</option>
+        </select>
+        <a md-menu-item (click)="searchByStatus(8)">deleted</a>
+        <a md-menu-item (click)="searchByStatus(0)">drafts</a>
+    </md-menu>
+</form>
+
+<md-card class="search-items" *ngIf="resultsOpen">
+    <div *ngFor="let note of notes | async" class="list-item">
+        <md-card-title>
+            >> <a [routerLink]="['/note', note.id]"
+            (click)="resultsOpen = false">
+                {{ note.title }}
+            </a>
+        </md-card-title>
+        <md-card-subtitle>
+            created: {{ note.created | date }}
+            |
+            importance: {{ note.important }}
+                <md-icon class="importance-icon"
+                    (click)="updateImportance(note.id, note.important + 1)">
+                    arrow_upward
+                </md-icon>
+                <md-icon class="importance-icon"
+                    (click)="updateImportance(note.id, note.important -1)">
+                    arrow_downward
+                </md-icon>
+        </md-card-subtitle>
+        <md-card-content
+            class="item-body"
+            [innerHTML]="note.body | snap | markdown">
+        </md-card-content>
+    </div>
+</md-card>

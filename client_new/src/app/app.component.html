@@ -1,0 +1,25 @@
+<md-toolbar>
+    <notes-search></notes-search>
+    <section class="menu">
+        <button md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon>more_vert</md-icon>
+        </button>
+
+        <md-menu #menu="mdMenu" x-position="before">
+            <a md-menu-item [routerLink]="['/note', 'new', 'edit']">
+                <md-icon>add_box</md-icon>
+                <span>Create New Note</span>
+            </a>
+            <a md-menu-item [routerLink]="['/tags']">
+                <md-icon>edit</md-icon>
+                <span>Tags</span>
+            </a>
+            <a href="/logout" md-menu-item>
+                <md-icon>exit_to_app</md-icon>
+                <span>Sign Out</span>
+            </a>
+        </md-menu>
+    </section>
+</md-toolbar>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,16 @@
+<md-card>
+    <md-card-title>
+        tags
+    </md-card-title>
+    <md-card-content>
+        <md-list dense>
+            <md-list-item *ngFor="let tag of tags">
+                <tag [tag]="tag"></tag>
+            </md-list-item>
+            <md-list-item (click)="addNew()">
+                <md-icon style="font-size: 14px;">add</md-icon>
+                Add New
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

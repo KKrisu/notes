@@ -30,8 +30,7 @@ model.reconnect();
 require('./config/passport')(passport, model);
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsLocals);
-app.use('/static', express.static('./client/app/static'));
-app.use('/partials', express.static('./client/partials'));
+app.engine('html', ejs.renderFile);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -51,8 +50,11 @@ app.use(require('./server/middlewares').handleUserSession);
 app.use(require('./server/middlewares').handleFlashes);
 
 // # ROUTES #
-app.use('/', require('./server/routes/routes'));
 app.use('/api/v1/', require('./server/routes/api'));
+app.use('/', require('./server/routes/routes'));
+
+// # Statics #
+app.use(express.static('./client_new/dist'));
 
 app.listen(config.port);
 console.info('Server has started listening on port', config.port);
