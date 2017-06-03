@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { NgForm } from '@angular/forms';
 
+import { AceEditorComponent } from 'ng2-ace-editor';
+
 import { SaveChangesGuardService } from './save-changes-guard.service';
 import { ApiService } from '../api.service';
 import { Note } from '../note';
@@ -22,7 +24,9 @@ export class NoteEditComponent implements OnInit {
     private selectedTags: Set<number> = new Set();
     private statuses = (new Statuses()).note;
     private editorText: string = '';
-    @ViewChild('noteForm') private noteForm: NgForm;
+
+    @ViewChild('editor', {read: AceEditorComponent})
+    editor: AceEditorComponent;
 
     get statusesKeys():number[] {
         return Object.keys(this.statuses).map(item => parseInt(item, 10));
@@ -38,10 +42,16 @@ export class NoteEditComponent implements OnInit {
 
     ngOnInit() {
         let getNotePromise: Promise<Note>;
-        let getTagsPromise: Promise<Tag[]>;
+        let getTagsPromise: Promise<Tag[]> = this.apiService.getItem('tags');
 
-
-        getTagsPromise = this.apiService.getItem('tags');
+        setTimeout(() => {
+            const aceEditor = this.editor.getEditor();
+            aceEditor.setOptions({
+                maxLines: Infinity,
+            });
+            aceEditor.$blockScrolling = Infinity;
+            aceEditor.getSession().setUseWrapMode(true);
+        });
 
         this.route.params.subscribe((params: Params) => {
             this.saveChangesGuard.deactivate();

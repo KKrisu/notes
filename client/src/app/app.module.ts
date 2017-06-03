@@ -22,12 +22,12 @@ import { TagComponent } from './tag/tag.component';
 import { SearchComponent } from './search/search.component';
 import { AstTreeComponent } from './ast-tree/ast-tree.component';
 
-import { AceEditorDirective } from 'ng2-ace-editor';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 // Modules for ACE editor based on
 // https://github.com/thlorenz/brace#can-i-use-it-with-typescript
-import "brace/mode/markdown";
-import "brace/theme/eclipse";
+import 'brace/mode/markdown';
+import 'brace/theme/eclipse';
 
 @NgModule({
     declarations: [
@@ -41,7 +41,6 @@ import "brace/theme/eclipse";
         AstTreeComponent,
         MarkdownPipe,
         SnapPipe,
-        AceEditorDirective,
     ],
     entryComponents: [
         SaveNoteChangesDialogComponent,
@@ -53,6 +52,7 @@ import "brace/theme/eclipse";
         HttpModule,
         routing,
         MaterialModule.forRoot(),
+        AceEditorModule,
     ],
     providers: [
         ApiService,

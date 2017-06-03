@@ -2,10 +2,10 @@
     <md-card>
         <md-card-subtitle class="importance">
             importance: <strong>{{ note.important }}</strong>
-            <a (click)="updateImportance(note.important + 1)">
+            <a class="importance-icon" (click)="updateImportance(note.important + 1)">
                 <md-icon>arrow_upward</md-icon>
             </a>
-            <a (click)="updateImportance(note.important -1)">
+            <a class="importance-icon" (click)="updateImportance(note.important -1)">
                 <md-icon>arrow_downward</md-icon>
             </a>
         </md-card-subtitle>

@@ -2,7 +2,7 @@
     <md-card>
         <md-card-title *ngIf="!note.id">New Entry</md-card-title>
         <md-card-title *ngIf="note.id">Edit Entry</md-card-title>
-        <form (ngSubmit)="saveNote()" #noteForm="ngForm">
+        <form (ngSubmit)="saveNote()">
             <div>
                 <md-input [(ngModel)]="note.title"
                     name="title"
@@ -15,15 +15,15 @@
             <md-card-content>
                 <md-tab-group>
                     <md-tab label="Edit">
-                        <div ace-editor
+                        <ace-editor
+                            #editor
                             class="ace-editor"
                             [text]="editorText"
                             [mode]="'markdown'"
                             [theme]="'eclipse'"
                             [autoUpdateContent]="true"
-                            [options]="{$blockScrolling: Infinity}"
                             (textChanged)="onChange($event)">
-                        </div>
+                        </ace-editor>
                     </md-tab>
                     <md-tab label="Preview">
                         <div *ngIf="note.body" [innerHTML]="note.body | markdown"></div>
