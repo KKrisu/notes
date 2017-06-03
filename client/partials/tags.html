@@ -1,8 +1,0 @@
-<p><a href="#/tags/new">Add New Tag</a></p>
-<ul>
-    <li ng-repeat="tag in $ctrl.tags">
-        {{ tag.name }}
-        <a href="#/tags/{{ tag.id }}">edit</a>
-        <a href="#/search?tag={{ tag.name }}" >search by</a>
-    </li>
-</ul>
