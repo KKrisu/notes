@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SnapPipe implements PipeTransform {
 
-  transform(input: string): any {
+  transform(input: string): string {
     let transformed = input.split('\n', 1)[0];
 
     if (transformed.length < input.length) {

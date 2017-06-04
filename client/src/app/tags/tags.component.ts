@@ -11,7 +11,7 @@ import { Tag } from '../tag';
 })
 export class TagsComponent implements OnInit {
 
-    tags: any[];
+    tags: Tag[];
 
     constructor(
         private apiService: ApiService,

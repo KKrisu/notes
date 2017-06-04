@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { NgForm } from '@angular/forms';
@@ -11,14 +11,16 @@ import { Note } from '../note';
 import { Tag } from '../tag';
 import { Statuses } from '../statuses';
 
+type paramId = 'new' | number;
+
 @Component({
     selector: 'note-edit',
     templateUrl: './note-edit.component.html',
     styleUrls: ['./note-edit.component.less'],
 })
-export class NoteEditComponent implements OnInit {
+export class NoteEditComponent implements OnInit, AfterViewInit {
 
-    private currentId: any;
+    private currentId: paramId;
     private note: Note;
     private tags: Tag[];
     private selectedTags: Set<number> = new Set();
@@ -44,15 +46,6 @@ export class NoteEditComponent implements OnInit {
         let getNotePromise: Promise<Note>;
         let getTagsPromise: Promise<Tag[]> = this.apiService.getItem('tags');
 
-        setTimeout(() => {
-            const aceEditor = this.editor.getEditor();
-            aceEditor.setOptions({
-                maxLines: Infinity,
-            });
-            aceEditor.$blockScrolling = Infinity;
-            aceEditor.getSession().setUseWrapMode(true);
-        });
-
         this.route.params.subscribe((params: Params) => {
             this.saveChangesGuard.deactivate();
             this.currentId = params['id'];
@@ -76,12 +69,23 @@ export class NoteEditComponent implements OnInit {
 
     }
 
+    ngAfterViewInit() {
+        setTimeout(() => {
+            const aceEditor = this.editor.getEditor();
+            aceEditor.setOptions({
+                maxLines: Infinity,
+            });
+            aceEditor.$blockScrolling = Infinity;
+            aceEditor.getSession().setUseWrapMode(true);
+        });
+    }
+
     onChange(body: string) {
         this.note.body = body;
         this.saveChangesGuard.activate();
     }
 
-    tagChecked(event: any, tagId: number) {
+    tagChecked(event: HTMLInputElement, tagId: number) {
         this.saveChangesGuard.activate();
         if (event.checked) {
             this.selectedTags.add(tagId);
@@ -93,7 +97,7 @@ export class NoteEditComponent implements OnInit {
     saveNote(form) {
         this.apiService.createItem('posts', Object.assign({}, this.note, {
             tags: Array.from(this.selectedTags),
-        })).then((data: any) => {
+        })).then((data: {id: number}) => {
             if (this.currentId === 'new') {
                 this.router.navigate([`/note`, data.id]);
             } else {
