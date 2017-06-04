@@ -1,7 +1,12 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { ApiService } from '../api.service';
 import { Note } from '../note';

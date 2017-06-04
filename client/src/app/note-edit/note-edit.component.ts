@@ -4,6 +4,7 @@ import { MdSnackBar } from '@angular/material';
 import { NgForm } from '@angular/forms';
 
 import { AceEditorComponent } from 'ng2-ace-editor';
+import { Observable } from 'rxjs/Observable';
 
 import { SaveChangesGuardService } from './save-changes-guard.service';
 import { ApiService } from '../api.service';
@@ -30,7 +31,7 @@ export class NoteEditComponent implements OnInit, AfterViewInit {
     @ViewChild('editor', {read: AceEditorComponent})
     editor: AceEditorComponent;
 
-    get statusesKeys():number[] {
+    get statusesKeys(): number[] {
         return Object.keys(this.statuses).map(item => parseInt(item, 10));
     }
 
@@ -70,7 +71,21 @@ export class NoteEditComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        setTimeout(() => {
+        // This is done with sequence checking every 100ms, because
+        // editor is sometimes not initialized with delay
+        const editorReady$ = new Observable((observer) => {
+            function checkEditor() {
+                if (!this.editor) {
+                    setTimeout(checkEditor.bind(this), 100);
+                } else {
+                    observer.complete();
+                }
+            }
+
+            checkEditor.apply(this);
+        });
+
+        editorReady$.subscribe(null, null, () => {
             const aceEditor = this.editor.getEditor();
             aceEditor.setOptions({
                 maxLines: Infinity,
