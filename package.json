@@ -2,7 +2,7 @@
   "version": "0.0.1-1",
   "scripts": {
     "start": "app.js",
-    "frontend_dev": "cd client_new && ng serve --proxy-config proxy.conf.json"
+    "frontend_dev": "cd client && ./node_modules/.bin/ng serve --proxy-config proxy.conf.json"
   },
   "engines": {
     "node": "0.10.x"
@@ -15,7 +15,7 @@
   "license": "DWTFYW",
   "dependencies": {
     "basic-auth-connect": "~1.0.0",
-    "bcrypt": "0.8.5",
+    "bcrypt": "1.0.2",
     "body-parser": "~1.4.3",
     "connect-flash": "0.1.1",
     "cookie-parser": "1.4.1",

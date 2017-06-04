@@ -54,7 +54,7 @@ app.use('/api/v1/', require('./server/routes/api'));
 app.use('/', require('./server/routes/routes'));
 
 // # Statics #
-app.use(express.static('./client_new/dist'));
+app.use(express.static('./client/dist'));
 
 app.listen(config.port);
 console.info('Server has started listening on port', config.port);

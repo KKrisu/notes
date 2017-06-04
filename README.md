@@ -6,7 +6,7 @@
 Create app.json config file in /config based on example file.
 
 ```
-$ cd client_new && npm install
+$ cd client && npm install
 ```
 
 ### dev ###
@@ -22,19 +22,7 @@ Open **http://localhost:4200**
 ```
 $ set /config/app.json - loginRequired: true
 $ nodemon app.js
-$ cd client_new && ng build --prod
+$ cd client && ./node_modules/.bin/ng build --prod
 ```
 
 Open: **http://localhost:9000**
-
-###### [deprecated] deploy: #######
-* `/client/app`
-* `/client/partials`
-* `/client/index.ejs`
-* `/client/login.ejs`
-* `/server`
-* `/config/app.prod.json`
-* `/config/passport.js`
-* `/scripts`
-* `app.js`
-* `package.json`

@@ -7,7 +7,7 @@ module.exports = (function() {
 
 
     router.get('/login', function(req, res) {
-        res.render(path.join(appRoot, './client_new/dist/assets/login.ejs'));
+        res.render(path.join(appRoot, './client/dist/assets/login.ejs'));
     });
 
     // process the login form
@@ -33,7 +33,7 @@ module.exports = (function() {
 
     router.get(/^[^.]+$/, function(req, res) {
         if(req.isAuthenticated() || !config.session.loginRequired) {
-            res.render(path.join(appRoot, './client_new/dist/index.html'));
+            res.render(path.join(appRoot, './client/dist/index.html'));
         } else {
             res.redirect('/login');
         }
