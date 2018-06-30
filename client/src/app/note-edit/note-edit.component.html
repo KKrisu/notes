@@ -4,12 +4,14 @@
         <md-card-title *ngIf="note.id">Edit Entry</md-card-title>
         <form (ngSubmit)="saveNote()">
             <div>
-                <md-input [(ngModel)]="note.title"
+                <md-input
+                    [(ngModel)]="note.title"
+                    class="title-input"
                     name="title"
                     placeholder="Title"
                     type="text"
-                    required>
-                </md-input>
+                    required
+                ></md-input>
             </div>
 
             <md-card-content>
