@@ -1,5 +1,10 @@
 <md-toolbar>
     <notes-search></notes-search>
+
+    <a md-mini-fab class="add-new-btn" [routerLink]="['/note', 'new', 'edit']">
+        <md-icon>add</md-icon>
+    </a>
+
     <section class="menu">
         <button md-icon-button [md-menu-trigger-for]="menu">
             <md-icon>more_vert</md-icon>

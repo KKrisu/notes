@@ -10,10 +10,12 @@ module.exports = (function() {
     var router = require('express').Router();
 
     // search
-    router.get('/posts', requireLogin, function(req, res) {
-        model.getPosts(req.query).then(function (result) {
+    router.get('/posts', requireLogin, (req, res) => {
+        model.getPosts(req.query).then((result) => {
             res.type('application/json');
             res.send(result);
+        }, (error) => {
+            res.send(500, 'search error');
         });
     });
 

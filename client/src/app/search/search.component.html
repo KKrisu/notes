@@ -1,9 +1,11 @@
 <form (click)="refetch()">
 
-    <md-input placeholder="Search"
+    <md-input
         [formControl]="searchControl"
-        (keyup.escape)="resultsOpen = false">
-    </md-input>
+        (keyup.escape)="resultsOpen = false"
+        class="search-input"
+        placeholder="Search"
+    ></md-input>
 
 
     <button md-icon-button [md-menu-trigger-for]="searchDetails" class="search-details-button">

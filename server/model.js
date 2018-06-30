@@ -74,8 +74,7 @@ var model = module.exports = {
 
             query += ' ORDER BY post.important DESC';
 
-            var q = model.connection.query(query, preparedStatment,
-            function(err, rows) {
+            var q = model.connection.query(query, preparedStatment, function(err, rows) {
                 if(err) {
                     console.error(err);
                     defer.reject(new Error(err));
@@ -93,7 +92,6 @@ var model = module.exports = {
                     defer.resolve(rows);
                 });
             });
-            // pr(q.sql);
         };
 
         var addSearchByTagToQuery = function (searchTagBy) {
@@ -101,11 +99,12 @@ var model = module.exports = {
 
             _this.getTags(searchTagBy).then(function (tags) {
 
-                if(!tags.length) {
-                    tagDefer.resolve();
+                if (!tags.length) {
+                    tagDefer.resolve(tags);
                     return;
                 }
 
+                // could be done with map instead of reduce
                 var tags_ids = _.reduce(tags, function (result, tag) {
                     result.push(tag.id);
                     return result;
@@ -115,7 +114,7 @@ var model = module.exports = {
 
                 conditions.OR.push('p_t.tag_id IN (' + tags_ids.join(',') + ')');
 
-                tagDefer.resolve();
+                tagDefer.resolve(tags);
             });
 
             return tagDefer.promise;
@@ -137,7 +136,13 @@ var model = module.exports = {
 
         } else if(params.tag) {
             // search by tag
-            addSearchByTagToQuery(params.tag).then(searchQuery);
+            addSearchByTagToQuery(params.tag).then((tags) => {
+                if (tags.length) {
+                    searchQuery();
+                } else {
+                    defer.resolve([]);
+                }
+            });
         } else {
             // returns all posts
             searchQuery();
@@ -451,7 +456,6 @@ var model = module.exports = {
                 defer.reject('No user found for defined email.');
                 return;
             }
-            console.log(password, rows[0].password);
 
             // if the user is found but the password is wrong
             if (!bcrypt.compareSync(password, rows[0].password)) {

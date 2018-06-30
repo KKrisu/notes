@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -16,7 +15,7 @@ import { Note } from '../note';
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.less'],
     host: {
-        '(document:click)': 'documentClick($event)'
+        '(document:click)': 'documentClick($event)',
     },
 })
 export class SearchComponent implements OnInit {
